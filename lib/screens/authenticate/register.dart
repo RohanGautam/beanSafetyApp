@@ -11,10 +11,13 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
 
   // text field state
   String email = "";
   String password = "";
+  String registerError="";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,10 +37,15 @@ class _RegisterState extends State<Register> {
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
         child: Form(
+          key: _formKey, //associate a global key with our form (to track it for validation)
           child: Column(
             children: <Widget>[
               SizedBox(height: 20),
               TextFormField(
+                validator: (val){
+                  // null if valid, helper text if invalid
+                  return val.isEmpty ? "Enter email" : null;
+                },
                 onChanged: (val) {
                   setState(() {
                     email = val;
@@ -46,6 +54,10 @@ class _RegisterState extends State<Register> {
               ),
               SizedBox(height: 20),
               TextFormField(
+                validator: (val){
+                  // null if valid, helper text if invalid
+                  return val.length<6 ? "Enter password atleast 6 characters long" : null;
+                },
                 onChanged: (val) {
                   setState(() {
                     password = val;
@@ -58,9 +70,28 @@ class _RegisterState extends State<Register> {
                 child: Text("Register"),
                 onPressed: () async {
                   //login with email and pw
-                  print("$email \n$password");
+                  // validate : runs validators we defined for each form field
+                  if(_formKey.currentState.validate()){
+                    var result = await _auth.registerEmailAndPassword(email, password);
+                    if(result==null){
+                      setState(() {
+                        registerError = "Invalid email supplied";
+                      });
+                    }
+                    else{
+                      setState(() {
+                        registerError="";
+                      });
+                    }
+                    // no need  to go to homepage in else
+                    // The register will result in the stram containing the user.
+                    // So, the parent will go to the homepage on it's own.
+                  }
                 },
-              )
+              ),
+              SizedBox(height: 12,),
+              Text(registerError, style: TextStyle(color: Colors.red),)
+
             ],
           ),
         ),
