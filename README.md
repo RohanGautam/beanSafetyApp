@@ -12,3 +12,4 @@ A new Flutter project.
 * We use `Streams` in dart to lisen for changes (eg: listen for change in authentication status in the wrapper). 
     * Each peice of information in a `Stream` in being continually sent. Basically, dont send shit all at once, but send it as and when you recieve it.
 * We use the `Provider` package for listening to changes lower in the widget tree from somewhere higher in the widget tree. It is the recommended way for state management in flutter. It is used in the root widget (`main.dart` here)
+* Can pass functions to children as parameters, which toggle the parent's state (here, to switch views). For example, check out how register and sign in are switched. There is no `Material.push()` or whatever that is, to manually push/pop a page from the stack. It's all handled by a parent class controlling both the states.

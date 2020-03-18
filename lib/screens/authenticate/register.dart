@@ -1,35 +1,33 @@
 import 'package:firebase_tutorial/services/auth.dart';
 import 'package:flutter/material.dart';
 
-class SignIn extends StatefulWidget {
+class Register extends StatefulWidget {
   final Function toggleSignIn;
   //Constructor to accept arguments
-  SignIn({this.toggleSignIn});
-
+  Register({this.toggleSignIn});
   @override
-  _SignInState createState() => _SignInState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _SignInState extends State<SignIn> {
+class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
 
   // text field state
   String email = "";
   String password = "";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        title: Text("Sign in!"),
+        title: Text("Register!"),
         actions: <Widget>[
           FlatButton.icon(
             onPressed: () {
               widget.toggleSignIn();
             },
             icon: Icon(Icons.person),
-            label: Text("Register"),
+            label: Text("Sign In"),
           ),
         ],
       ),
@@ -57,7 +55,7 @@ class _SignInState extends State<SignIn> {
               ),
               SizedBox(height: 20),
               RaisedButton(
-                child: Text("Sign In"),
+                child: Text("Register"),
                 onPressed: () async {
                   //login with email and pw
                   print("$email \n$password");
