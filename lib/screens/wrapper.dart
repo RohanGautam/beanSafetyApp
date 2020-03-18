@@ -9,9 +9,8 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final user = Provider.of<User>(context); // <User> to specify which stream to listen to
-    print("In wrapper : $user");
-    //return either home or authenticate widget(screens)
 
+    //return either home or authenticate widget(screens)
     return user==null ? Authenticate(): Home();
   }
 }

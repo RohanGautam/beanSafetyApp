@@ -69,7 +69,7 @@ class _RegisterState extends State<Register> {
               RaisedButton(
                 child: Text("Register"),
                 onPressed: () async {
-                  //login with email and pw
+                  //register with email and pw
                   // validate : runs validators we defined for each form field
                   if(_formKey.currentState.validate()){
                     var result = await _auth.registerEmailAndPassword(email, password);
