@@ -1,4 +1,5 @@
 import 'package:firebase_tutorial/services/auth.dart';
+import 'package:firebase_tutorial/shared/loading.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
@@ -13,6 +14,7 @@ class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
+  bool loading = false;
   // text field state
   String email = "";
   String password = "";
@@ -20,7 +22,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       appBar: AppBar(
         elevation: 0.0,
         title: Text("Register!"),
@@ -72,10 +74,15 @@ class _RegisterState extends State<Register> {
                   //register with email and pw
                   // validate : runs validators we defined for each form field
                   if(_formKey.currentState.validate()){
+                    // show loading before await.
+                    setState(() {
+                      loading = true;                       
+                    });
                     var result = await _auth.registerEmailAndPassword(email, password);
                     if(result==null){
                       setState(() {
                         registerError = "Invalid email supplied";
+                        loading = false;
                       });
                     }
                     else{

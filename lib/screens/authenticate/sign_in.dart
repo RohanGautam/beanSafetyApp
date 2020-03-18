@@ -1,4 +1,5 @@
 import 'package:firebase_tutorial/services/auth.dart';
+import 'package:firebase_tutorial/shared/loading.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
@@ -13,6 +14,8 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+
+  bool loading = false;
   // text field state
   String email = "";
   String password = "";
@@ -20,7 +23,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       appBar: AppBar(
         elevation: 0.0,
         title: Text("Sign in!"),
@@ -71,10 +74,15 @@ class _SignInState extends State<SignIn> {
                 onPressed: () async {
                   //login with email and pw
                   if(_formKey.currentState.validate()){
+                    // show loading before await.
+                    setState(() {
+                      loading = true;                       
+                    });
                     var result = await _auth.signInEmailAndPassword(email, password);
                     if(result==null){
                       setState(() {
                         registerError = "Could not sign in with given credentials";
+                        loading=false;
                       });
                     }
                     else{
