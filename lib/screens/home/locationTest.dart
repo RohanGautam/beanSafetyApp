@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_tutorial/models/currentLocation.dart';
+import 'package:firebase_tutorial/services/currentLocation.dart';
+import 'package:provider/provider.dart';
 
 class LocationTest extends StatefulWidget {
   @override
@@ -11,6 +13,13 @@ class _LocationTestState extends State<LocationTest> {
 
   @override
   Widget build(BuildContext context) {
+
+    final userData = Provider.of<QuerySnapshot>(context);
+    print(userData.documents);
+    for (var doc in userData.documents){
+      print(doc.data);
+    }
+
     return Container(
       child: Center(
         child: Column(
