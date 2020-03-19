@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_tutorial/models/userData.dart';
 import 'package:firebase_tutorial/screens/home/locationTest.dart';
 import 'package:firebase_tutorial/services/auth.dart';
 import 'package:firebase_tutorial/services/database.dart';
@@ -10,7 +10,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<QuerySnapshot>.value(
+    return StreamProvider<List<UserData>>.value(
       // now we can access the data is descendant widgets.
       value: DatabaseService().userDataStream,
       child: Scaffold(

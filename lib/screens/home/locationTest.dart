@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_tutorial/models/userData.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_tutorial/services/currentLocation.dart';
 import 'package:provider/provider.dart';
@@ -13,12 +14,11 @@ class _LocationTestState extends State<LocationTest> {
 
   @override
   Widget build(BuildContext context) {
-
-    final userData = Provider.of<QuerySnapshot>(context);
-    print(userData.documents);
-    for (var doc in userData.documents){
-      print(doc.data);
-    }
+    final userData = Provider.of<List<UserData>>(context);
+    // userData.forEach((data) {
+    //   print("lat : ${data.latitude}");
+    //   print("lng : ${data.longitude}");
+    // });
 
     return Container(
       child: Center(
@@ -40,7 +40,27 @@ class _LocationTestState extends State<LocationTest> {
                 }
               },
             ),
-            Text(locationDisplay)
+            Text(
+              locationDisplay,
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text("From database"),
+            Expanded( // to have listview inside col w/o errors
+              child: ListView.builder(
+                itemCount: userData.length,
+                itemBuilder: (context, index) {
+                  print("lat : ${userData[index].latitude}");
+                  print("lng : ${userData[index].longitude}");
+                  return Center(
+                    child: Text(
+                        "Latitude : ${userData[index].latitude}\nLongitude : ${userData[index].longitude}"),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

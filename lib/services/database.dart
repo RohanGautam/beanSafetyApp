@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:firebase_tutorial/models/userData.dart';
 class DatabaseService {
   final String uid;
   DatabaseService({this.uid});
@@ -15,8 +15,18 @@ class DatabaseService {
     });
   }
 
+  // get userData objects from snapshot
+  List<UserData> _userDataFromSnapshot(QuerySnapshot snapshot){
+    return snapshot.documents.map((doc){
+      return UserData(
+        latitude: doc.data['latitude'] ?? 0, // if 'latitude doesnt exist
+        longitude: doc.data['longitude'] ?? 0
+      );
+    }).toList();
+  }
+
   // get user's data stream
-  Stream<QuerySnapshot> get userDataStream {
-    return userCollection.snapshots();
+  Stream<List<UserData>> get userDataStream {
+    return userCollection.snapshots().map(_userDataFromSnapshot);
   }
 }
