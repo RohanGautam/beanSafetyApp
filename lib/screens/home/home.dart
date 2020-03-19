@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_tutorial/screens/home/locationTest.dart';
 import 'package:firebase_tutorial/services/auth.dart';
 import 'package:firebase_tutorial/services/database.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamProvider<QuerySnapshot>.value(
       // now we can access the data is descendant widgets.
-      value: DatabaseService().userDataStream, 
+      value: DatabaseService().userDataStream,
       child: Scaffold(
         appBar: AppBar(
           title: Text("Home Page"),
@@ -27,14 +28,7 @@ class Home extends StatelessWidget {
             )
           ],
         ),
-        body: Container(
-          child: Center(
-            child: RaisedButton(
-              child: Text("ignore me"),
-              onPressed: null,
-            ),
-          ),
-        ),
+        body: LocationTest(),
       ),
     );
   }
