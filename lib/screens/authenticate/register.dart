@@ -85,11 +85,6 @@ class _RegisterState extends State<Register> {
                         loading = false;
                       });
                     }
-                    else{
-                      setState(() {
-                        registerError="";
-                      });
-                    }
                     // no need  to go to homepage in else
                     // The register will result in the stram containing the user.
                     // So, the parent will go to the homepage on it's own.
