@@ -1,6 +1,7 @@
 class UserData {
   final double latitude;
   final double longitude;
+  final String uid;
 
-  UserData({this.latitude, this.longitude});
+  UserData({this.uid, this.latitude, this.longitude});
 }

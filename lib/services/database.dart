@@ -19,8 +19,9 @@ class DatabaseService {
   List<UserData> _userDataFromSnapshot(QuerySnapshot snapshot){
     return snapshot.documents.map((doc){
       return UserData(
-        latitude: doc.data['latitude'] ?? 0, // if 'latitude doesnt exist
-        longitude: doc.data['longitude'] ?? 0
+        uid: doc.documentID,
+        latitude: doc.data['latitude'].toDouble() ?? 0.0, // if 'latitude doesnt exist
+        longitude: doc.data['longitude'].toDouble() ?? 0.0
       );
     }).toList();
   }

@@ -13,12 +13,14 @@ class LocationTest extends StatefulWidget {
 
 class _LocationTestState extends State<LocationTest> {
   String locationDisplay = '';
-  var location = UserData(latitude: 0, longitude: 0);
+  // var location = {'latitude': 0.0, 'longitude': 0.0};
+  var currentLat = 0.0;
+  var currentLng = 0.0;
 
   @override
   Widget build(BuildContext context) {
     final userData = Provider.of<List<UserData>>(context);
-  User user = Provider.of<User>(context);
+    User user = Provider.of<User>(context);
     // userData.forEach((data) {
     //   print("lat : ${data.latitude}");
     //   print("lng : ${data.longitude}");
@@ -31,11 +33,15 @@ class _LocationTestState extends State<LocationTest> {
             RaisedButton(
               child: Text("Get location"),
               onPressed: () async {
-                location = await CurrentLocation().getCurrentLocation();
+                var location = await CurrentLocation().getCurrentLocation();
+                
                 if (location != null) {
                   setState(() {
+                    currentLat = location['latitude'];
+                    currentLng = location['longitude'];
                     locationDisplay =
-                        "${location.latitude}, ${location.longitude}";
+                        "${currentLat}, ${currentLng}";
+                    print(locationDisplay);
                   });
                 } else {
                   setState(() {
@@ -51,27 +57,51 @@ class _LocationTestState extends State<LocationTest> {
             SizedBox(
               height: 20,
             ),
-            Text("From database"),
-            Expanded( // to have listview inside col w/o errors
+            Text("Location of all users:"),
+            Expanded(
+              // to have listview inside col w/o errors
               child: ListView.builder(
                 itemCount: userData.length,
                 itemBuilder: (context, index) {
-                  print("lat : ${userData[index].latitude}");
-                  print("lng : ${userData[index].longitude}");
+                  // print("lat : ${userData[index].latitude}");
+                  // print("lng : ${userData[index].longitude}");
                   return Center(
                     child: Text(
-                        "Latitude : ${userData[index].latitude}\nLongitude : ${userData[index].longitude}"),
+                        "User ${userData[index].uid}\nLatitude : ${userData[index].latitude}\nLongitude : ${userData[index].longitude}"),
                   );
                 },
               ),
             ),
             RaisedButton(
-              child: Text("Send location"),
+              child: Text("Send location to db"),
               onPressed: () async {
-                var result = await DatabaseService(uid: user.uid).updateUserData(location.latitude, location.longitude);
+                var result = await DatabaseService(uid: user.uid)
+                    .updateUserData(
+                        currentLat, currentLng);
                 print(result);
               },
             ),
+            RaisedButton(
+              child: Text(
+                "Alert",
+                style: TextStyle(fontSize: 50),
+              ),
+              onPressed: () async {
+                print("Alert- current info: ");
+                // UserData
+                userData.forEach((data) {
+                  if(data.uid==user.uid){
+                    print("Current user:\n\t${data.uid}");
+                  }
+                  else{
+                    print("Other users:\n\t${data.uid}");
+                  }
+                  print("\tlat : ${data.latitude}");
+                  print("\tlng : ${data.longitude}");
+                });
+              },
+            ),
+            SizedBox(height: 100)
           ],
         ),
       ),
