@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_tutorial/models/user.dart';
 import 'package:firebase_tutorial/models/userData.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_tutorial/services/currentLocation.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_tutorial/services/database.dart';
 
 class LocationTest extends StatefulWidget {
   @override
@@ -11,10 +13,12 @@ class LocationTest extends StatefulWidget {
 
 class _LocationTestState extends State<LocationTest> {
   String locationDisplay = '';
+  var location = UserData(latitude: 0, longitude: 0);
 
   @override
   Widget build(BuildContext context) {
     final userData = Provider.of<List<UserData>>(context);
+  User user = Provider.of<User>(context);
     // userData.forEach((data) {
     //   print("lat : ${data.latitude}");
     //   print("lng : ${data.longitude}");
@@ -27,11 +31,11 @@ class _LocationTestState extends State<LocationTest> {
             RaisedButton(
               child: Text("Get location"),
               onPressed: () async {
-                var location = await CurrentLocation().getCurrentLocation();
+                location = await CurrentLocation().getCurrentLocation();
                 if (location != null) {
                   setState(() {
                     locationDisplay =
-                        "${location['latitude']}, ${location['longitude']}";
+                        "${location.latitude}, ${location.longitude}";
                   });
                 } else {
                   setState(() {
@@ -60,6 +64,13 @@ class _LocationTestState extends State<LocationTest> {
                   );
                 },
               ),
+            ),
+            RaisedButton(
+              child: Text("Send location"),
+              onPressed: () async {
+                var result = await DatabaseService(uid: user.uid).updateUserData(location.latitude, location.longitude);
+                print(result);
+              },
             ),
           ],
         ),

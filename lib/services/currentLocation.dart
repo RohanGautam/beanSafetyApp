@@ -1,3 +1,4 @@
+import 'package:firebase_tutorial/models/userData.dart';
 import 'package:geolocator/geolocator.dart';
 
 class CurrentLocation {
@@ -10,10 +11,7 @@ class CurrentLocation {
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
       latitude = position.latitude;
       longitude = position.longitude;
-      return {
-        'latitude' : latitude,
-        'longitude' : longitude,
-      };
+      return UserData(latitude: latitude, longitude: longitude);
     } catch (e) {
       print(e);
       return null;
