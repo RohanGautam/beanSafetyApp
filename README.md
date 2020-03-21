@@ -15,3 +15,4 @@ A new Flutter project.
 * Can pass functions to children as parameters, which toggle the parent's state (here, to switch views). For example, check out how register and sign in are switched. There is no `Material.push()` or whatever that is, to manually push/pop a page from the stack. It's all handled by a parent class controlling both the states.
 * We are also use another stream from firebase, which notifies us of and document/document changes that happen in our database. We user `Provider` again, in the `home.dart` (the homepage)
 * getters are usually used for stream definition, so other classes just call this getter.
+* make sure streams are getting updated with the data they are listening to changes for
