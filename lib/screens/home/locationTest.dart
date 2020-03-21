@@ -21,10 +21,12 @@ class _LocationTestState extends State<LocationTest> {
   Widget build(BuildContext context) {
     final userData = Provider.of<List<UserData>>(context);
     User user = Provider.of<User>(context);
-    // userData.forEach((data) {
-    //   print("lat : ${data.latitude}");
-    //   print("lng : ${data.longitude}");
-    // });
+    UserData currentUserData;
+    userData.forEach((data) {
+      if (data.uid == user.uid) {
+        currentUserData = data;
+      }
+    });
 
     return Container(
       child: Center(
@@ -34,13 +36,12 @@ class _LocationTestState extends State<LocationTest> {
               child: Text("Get location"),
               onPressed: () async {
                 var location = await CurrentLocation().getCurrentLocation();
-                
+
                 if (location != null) {
                   setState(() {
                     currentLat = location['latitude'];
                     currentLng = location['longitude'];
-                    locationDisplay =
-                        "${currentLat}, ${currentLng}";
+                    locationDisplay = "${currentLat}, ${currentLng}";
                     print(locationDisplay);
                   });
                 } else {
@@ -67,7 +68,7 @@ class _LocationTestState extends State<LocationTest> {
                   // print("lng : ${userData[index].longitude}");
                   return Center(
                     child: Text(
-                        "User ${userData[index].uid}\nLatitude : ${userData[index].latitude}\nLongitude : ${userData[index].longitude}"),
+                        "User ${userData[index].uid}\nLatitude : ${userData[index].latitude}\nLongitude : ${userData[index].longitude}\nalerter : ${userData[index].alerter}"),
                   );
                 },
               ),
@@ -76,8 +77,7 @@ class _LocationTestState extends State<LocationTest> {
               child: Text("Send location to db"),
               onPressed: () async {
                 var result = await DatabaseService(uid: user.uid)
-                    .updateUserData(
-                        currentLat, currentLng);
+                    .updateUserData(currentLat, currentLng, currentUserData.alerter, currentUserData.alerted, currentUserData.responder);
                 print(result);
               },
             ),
@@ -87,21 +87,38 @@ class _LocationTestState extends State<LocationTest> {
                 style: TextStyle(fontSize: 50),
               ),
               onPressed: () async {
+                print("Alert- updating statuses: ");
+                // mark self as alerter
+                var r1 = await DatabaseService(uid: user.uid).updateUserData(
+                    currentUserData.latitude, currentUserData.longitude, true, currentUserData.alerted, currentUserData.responder);
+                // mark everyone else as alerted TODO: alert only those nearby
+                userData.forEach((data) async {
+                  if(data.uid!=user.uid){
+                    print("Alert- updating ${data.uid} ");
+                    var r2 = await DatabaseService(uid: data.uid).updateUserData(data.latitude, data.longitude, data.alerter, true, data.responder);
+                    print(r2);
+                print('curr database location ${currentUserData.latitude}, ${currentUserData.longitude}');
+                  }
+                });
                 print("Alert- current info: ");
                 // UserData
                 userData.forEach((data) {
-                  if(data.uid==user.uid){
+                  if (data.uid == user.uid) {
                     print("Current user:\n\t${data.uid}");
-                  }
-                  else{
+                  } else {
                     print("Other users:\n\t${data.uid}");
                   }
                   print("\tlat : ${data.latitude}");
                   print("\tlng : ${data.longitude}");
+                  print("\talerter : ${data.alerter}");
+                  print("\talerted : ${data.alerted}");
+                  print("\tresponder : ${data.responder}");
                 });
               },
             ),
-            SizedBox(height: 100)
+            SizedBox(height: 100),
+            Text(currentUserData.alerted ? "Alerted!!!!" : "Idle"),
+            SizedBox(height: 100),
           ],
         ),
       ),
