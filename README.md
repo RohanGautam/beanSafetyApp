@@ -7,6 +7,7 @@ A new Flutter project.
 * Set up a new firebase project, and link it with an android app (work with the `/android` folder in flutter). Follow along the steps.
 * In the firebase console under "Authentication", set up email and anonymous login methods.
 
+
 # Learnings
 * keep models(classes) seperate from the UI files. Also bunch related UI files together.
 * We use `Streams` in dart to lisen for changes (eg: listen for change in authentication status in the wrapper). 
@@ -16,3 +17,9 @@ A new Flutter project.
 * We are also use another stream from firebase, which notifies us of and document/document changes that happen in our database. We user `Provider` again, in the `home.dart` (the homepage)
 * getters are usually used for stream definition, so other classes just call this getter.
 * make sure streams are getting updated with the data they are listening to changes for
+* Can actually have more than 1 emulator running, with each acting as a seperate user.
+ 
+
+
+# References
+* [Hot reload on multiple devices](https://stackoverflow.com/a/58355638)
