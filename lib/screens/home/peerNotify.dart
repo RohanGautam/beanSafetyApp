@@ -31,6 +31,17 @@ class _PeerNotifyState extends State<PeerNotify> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Peer Notify"),
+        actions: <Widget>[
+          FlatButton.icon(
+              onPressed: () async {
+                userData.forEach((data) async {
+                  await DatabaseService(uid: data.uid)
+                      .updateUserData(0.0, 0.0, false, false, false, "none", 0);
+                });
+              },
+              icon: Icon(Icons.restore_from_trash),
+              label: Text("Clear data"))
+        ],
       ),
       body: Container(
         child: Center(
@@ -39,103 +50,63 @@ class _PeerNotifyState extends State<PeerNotify> {
               alertTypeSelector(),
               alertLevelSlider(),
               RaisedButton(
-                child: Text("Get location"),
-                onPressed: () async {
-                  var location = await CurrentLocation().getCurrentLocation();
-
-                  if (location != null) {
-                    setState(() {
-                      currentLat = location['latitude'];
-                      currentLng = location['longitude'];
-                      locationDisplay = "${currentLat}, ${currentLng}";
-                      print(locationDisplay);
-                    });
-                  } else {
-                    setState(() {
-                      locationDisplay = "unable to get location :(";
-                    });
-                  }
-                },
-              ),
-              Text(
-                locationDisplay,
-                style: TextStyle(fontSize: 20),
-              ),
-              RaisedButton(
-                child: Text("Send location to db"),
-                onPressed: () async {
-                  var result = await DatabaseService(uid: user.uid)
-                      .updateUserData(
-                          currentLat,
-                          currentLng,
-                          currentUserData.alerter,
-                          currentUserData.alerted,
-                          currentUserData.responder,
-                          currentUserData.alertType,
-                          currentUserData.alertLevel);
-                  print(result);
-                },
-              ),
-              RaisedButton(
-                child: Text("Reset all data"),
-                onPressed: () async {
-                  userData.forEach((data) async {
-                    await DatabaseService(uid: data.uid).updateUserData(
-                        0.0, 0.0, false, false, false, "none", 0);
-                  });
-                },
-              ),
-              RaisedButton(
                 child: Text(
                   "Alert",
                   style: TextStyle(fontSize: 50),
                 ),
-                onPressed: () async {
-                  print("Alert- updating statuses: ");
-                  // mark self as alerter
-                  var alertType = "Medical need";
-                  var alertLevel = 3;
-                  var r1 = await DatabaseService(uid: user.uid).updateUserData(
-                      currentUserData.latitude,
-                      currentUserData.longitude,
-                      true,
-                      currentUserData.alerted,
-                      currentUserData.responder,
-                      alertType,
-                      alertLevel);
-                  // mark everyone else as alerted TODO: alert only those nearby
-                  userData.forEach((data) async {
-                    if (data.uid != user.uid) {
-                      print("Alert- updating ${data.uid} ");
-                      var r2 = await DatabaseService(uid: data.uid)
-                          .updateUserData(
-                              data.latitude,
-                              data.longitude,
-                              data.alerter,
-                              true,
-                              data.responder,
-                              data.alertType,
-                              data.alertLevel);
-                      print(r2);
-                      print(
-                          'curr database location ${currentUserData.latitude}, ${currentUserData.longitude}');
-                    }
-                  });
-                  print("Alert- current info: ");
-                  // UserData
-                  userData.forEach((data) {
-                    if (data.uid == user.uid) {
-                      print("Current user:\n\t${data.uid}");
-                    } else {
-                      print("Other users:\n\t${data.uid}");
-                    }
-                    print("\tlat : ${data.latitude}");
-                    print("\tlng : ${data.longitude}");
-                    print("\talerter : ${data.alerter}");
-                    print("\talerted : ${data.alerted}");
-                    print("\tresponder : ${data.responder}");
-                  });
-                },
+                // disable button via setting onpressed to null if we dont have needed values
+                onPressed: (currentAlertType == null ||
+                        currentAlertLevel == null)
+                    ? null
+                    : () async {
+                        print("Alert- updating location: ");
+                        var _locres =
+                            await getAndUpdateLocation(currentUserData, user);
+                        print("Location got and updated : ${_locres}");
+                        print("Alert- updating statuses: ");
+                        // mark self as alerter
+                        var r1 = await DatabaseService(uid: user.uid)
+                            .updateUserData(
+                                currentLat,
+                                currentLng,
+                                true,
+                                currentUserData.alerted,
+                                currentUserData.responder,
+                                currentAlertType,
+                                currentAlertLevel);
+                        // mark everyone else as alerted TODO: alert only those nearby
+                        userData.forEach((data) async {
+                          if (data.uid != user.uid) {
+                            print("Alert- updating ${data.uid} ");
+                            var r2 = await DatabaseService(uid: data.uid)
+                                .updateUserData(
+                                    data.latitude,
+                                    data.longitude,
+                                    data.alerter,
+                                    true,
+                                    data.responder,
+                                    data.alertType,
+                                    data.alertLevel);
+                            print(r2);
+                            print(
+                                'curr database location ${currentUserData.latitude}, ${currentUserData.longitude}');
+                          }
+                        });
+                        print("Alert- current info: ");
+                        // UserData
+                        userData.forEach((data) {
+                          if (data.uid == user.uid) {
+                            print("Current user:\n\t${data.uid}");
+                          } else {
+                            print("Other users:\n\t${data.uid}");
+                          }
+                          print("\tlat : ${data.latitude}");
+                          print("\tlng : ${data.longitude}");
+                          print("\talerter : ${data.alerter}");
+                          print("\talerted : ${data.alerted}");
+                          print("\tresponder : ${data.responder}");
+                        });
+                      },
               ),
               Text(showNotificationStatus(userData, currentUserData)),
               RaisedButton(
@@ -144,17 +115,14 @@ class _PeerNotifyState extends State<PeerNotify> {
                   style: TextStyle(fontSize: 50),
                 ),
                 onPressed: () async {
-                  // mark self as responder
-                  var alertType = "Medical need";
-                  var alertLevel = 3;
                   var r1 = await DatabaseService(uid: user.uid).updateUserData(
                     currentUserData.latitude,
                     currentUserData.longitude,
                     currentUserData.alerter,
                     currentUserData.alerted,
                     true,
-                    alertType,
-                    alertLevel,
+                    currentUserData.alertType,
+                    currentUserData.alertLevel,
                   );
                 },
               )
@@ -165,12 +133,52 @@ class _PeerNotifyState extends State<PeerNotify> {
     );
   }
 
+  Future<bool> getAndUpdateLocation(UserData currentUserData, User user) async {
+    // get users location
+    var location = await CurrentLocation().getCurrentLocation();
+    if (location != null) {
+      setState(() {
+        currentLat = location['latitude'];
+        currentLng = location['longitude'];
+        locationDisplay = "${currentLat}, ${currentLng}";
+        // print(locationDisplay);
+      });
+    } else {
+      setState(() {
+        locationDisplay = "unable to get location :(";
+        return false;
+      });
+    }
+    // update database
+    var result;
+    print("${currentLat}, ${currentLng}");
+    result = await DatabaseService(uid: user.uid).updateUserData(
+        currentLat,
+        currentLng,
+        currentUserData.alerter,
+        currentUserData.alerted,
+        currentUserData.responder,
+        currentUserData.alertType,
+        currentUserData.alertLevel);
+    print(result);
+
+    if (result != null) {
+      return true;
+    } else {
+      // print(result.e);
+      return false;
+    }
+  }
+
   Widget alertLevelSlider() {
     return Column(
       children: <Widget>[
-        Text("\nAlert level", style: TextStyle(fontSize: 20),),
+        Text(
+          "\nAlert level",
+          style: TextStyle(fontSize: 20),
+        ),
         Slider(
-          value: (currentAlertLevel??0).toDouble(),
+          value: (currentAlertLevel ?? 0).toDouble(),
           min: 0,
           max: 5,
           divisions: 5,
@@ -190,7 +198,10 @@ class _PeerNotifyState extends State<PeerNotify> {
   Widget alertTypeSelector() {
     return Column(
       children: <Widget>[
-        Text("Issue:", style: TextStyle(fontSize: 25),),
+        Text(
+          "Issue:",
+          style: TextStyle(fontSize: 25),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -236,9 +247,10 @@ class _PeerNotifyState extends State<PeerNotify> {
   }
 
   Widget emergencyOptionButton(String emName, String imagePath) {
+    double deviceWidth = (MediaQuery.of(context).size.width / 2) - 20;
     return Container(
-      height: 190,
-      width: 190,
+      height: deviceWidth,
+      width: deviceWidth,
       padding: EdgeInsets.all(5),
       child: GestureDetector(
         onTap: () {
@@ -262,8 +274,8 @@ class _PeerNotifyState extends State<PeerNotify> {
               children: <Widget>[
                 Image.asset(
                   imagePath,
-                  width: 120,
-                  height: 120,
+                  width: deviceWidth - 80,
+                  height: deviceWidth - 80,
                 ),
                 SizedBox(height: 10),
                 Row(
@@ -298,7 +310,7 @@ class _PeerNotifyState extends State<PeerNotify> {
       userData.forEach((data) {
         if (data.alerter == true) {
           alertStatus =
-              "Alerted!!!! type ${data.alertType}, level ${data.alertLevel}";
+              "Alerted!!!! type ${data.alertType}, level ${data.alertLevel}, location ${data.latitude}, ${data.longitude}";
         }
       });
     }
