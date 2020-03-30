@@ -12,7 +12,7 @@ class UserData {
       {this.uid,
       this.latitude,
       this.longitude,
-      this.alerter = false,
-      this.alerted = false,
-      this.responder = false});
+      this.alerter,
+      this.alerted,
+      this.responder});
 }
