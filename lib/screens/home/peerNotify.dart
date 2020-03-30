@@ -15,6 +15,8 @@ class _PeerNotifyState extends State<PeerNotify> {
   // var location = {'latitude': 0.0, 'longitude': 0.0};
   var currentLat = 0.0;
   var currentLng = 0.0;
+  String currentAlertType;
+  int currentAlertLevel;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class _PeerNotifyState extends State<PeerNotify> {
           child: Column(
             children: <Widget>[
               alertTypeSelector(),
+              alertLevelSlider(),
               RaisedButton(
                 child: Text("Get location"),
                 onPressed: () async {
@@ -134,9 +137,7 @@ class _PeerNotifyState extends State<PeerNotify> {
                   });
                 },
               ),
-            
               Text(showNotificationStatus(userData, currentUserData)),
-              
               RaisedButton(
                 child: Text(
                   "Respond",
@@ -164,9 +165,32 @@ class _PeerNotifyState extends State<PeerNotify> {
     );
   }
 
+  Widget alertLevelSlider() {
+    return Column(
+      children: <Widget>[
+        Text("\nAlert level", style: TextStyle(fontSize: 20),),
+        Slider(
+          value: (currentAlertLevel??0).toDouble(),
+          min: 0,
+          max: 5,
+          divisions: 5,
+          activeColor: Colors.deepOrange[900],
+          inactiveColor: Colors.deepOrange[100],
+          onChanged: (val) {
+            setState(() {
+              currentAlertLevel = val.toInt();
+              print(currentAlertLevel);
+            });
+          },
+        ),
+      ],
+    );
+  }
+
   Widget alertTypeSelector() {
     return Column(
       children: <Widget>[
+        Text("Issue:", style: TextStyle(fontSize: 25),),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -185,30 +209,29 @@ class _PeerNotifyState extends State<PeerNotify> {
     );
   }
 
-  var selectedBorderColor = Color(0xFFF05A22);
   var borderRadius = BorderRadius.circular(30.0);
   var colorMap = {
-    'harassment' : Color(0xFFF05A22),
-    'health' : Color(0xFFF05A22),
-    'accident' : Color(0xFFF05A22),
-    'fire' : Color(0xFFF05A22),
+    'harassment': Color(0xFFF05A22),
+    'health': Color(0xFFF05A22),
+    'accident': Color(0xFFF05A22),
+    'fire': Color(0xFFF05A22),
   };
-  var currentAlertType;
-  updateBorderColor(String emName){
-    colorMap.forEach((alertType, color){
-      if(alertType == emName.toLowerCase()){
+
+  updateBorderColor(String emName) {
+    colorMap.forEach((alertType, color) {
+      if (alertType == emName.toLowerCase()) {
         setState(() {
-          colorMap[alertType] = Colors.blue[400];          
+          colorMap[alertType] = Colors.blue[400];
         });
-      }
-      else{
+      } else {
         setState(() {
-          colorMap[alertType] = Color(0xFFF05A22);                
+          colorMap[alertType] = Color(0xFFF05A22);
         });
       }
     });
   }
-  Color getBorderColor(String emName){
+
+  Color getBorderColor(String emName) {
     return colorMap[emName.toLowerCase()];
   }
 
