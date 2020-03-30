@@ -20,6 +20,7 @@ class _PeerNotifyState extends State<PeerNotify> {
 
   @override
   Widget build(BuildContext context) {
+    var buttonBorderRadius = BorderRadius.circular(50.0);
     final userData = Provider.of<List<UserData>>(context);
     User user = Provider.of<User>(context);
     UserData currentUserData;
@@ -50,9 +51,16 @@ class _PeerNotifyState extends State<PeerNotify> {
               alertTypeSelector(),
               alertLevelSlider(),
               RaisedButton(
-                child: Text(
-                  "Alert",
-                  style: TextStyle(fontSize: 50),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Alert",
+                    style: TextStyle(fontSize: 50),
+                  ),
+                ),
+                color: Colors.orangeAccent,
+                shape: new RoundedRectangleBorder(
+                  borderRadius: buttonBorderRadius,
                 ),
                 // disable button via setting onpressed to null if we dont have needed values
                 onPressed: (currentAlertType == null ||
@@ -110,9 +118,16 @@ class _PeerNotifyState extends State<PeerNotify> {
               ),
               Text(showNotificationStatus(userData, currentUserData)),
               RaisedButton(
-                child: Text(
-                  "Respond",
-                  style: TextStyle(fontSize: 50),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Respond",
+                    style: TextStyle(fontSize: 50),
+                  ),
+                ),
+                color: Colors.amber,
+                shape: new RoundedRectangleBorder(
+                  borderRadius: buttonBorderRadius,                  
                 ),
                 onPressed: () async {
                   var r1 = await DatabaseService(uid: user.uid).updateUserData(
