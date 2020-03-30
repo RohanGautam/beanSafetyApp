@@ -20,6 +20,8 @@ A new Flutter project.
 * Can actually have more than 1 emulator running, with each acting as a seperate user.
  
 
+# Login process
+![img](doc_images/loginprocess.png)
 
 # References
 * [Hot reload on multiple devices](https://stackoverflow.com/a/58355638)

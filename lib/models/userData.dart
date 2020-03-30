@@ -7,6 +7,9 @@ class UserData {
   bool alerter;
   bool alerted;
   bool responder;
+  // alert information
+  String alertType;
+  int alertLevel;
 
   UserData(
       {this.uid,
@@ -14,5 +17,7 @@ class UserData {
       this.longitude,
       this.alerter,
       this.alerted,
-      this.responder});
+      this.responder,
+      this.alertType,
+      this.alertLevel});
 }

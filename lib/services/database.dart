@@ -8,13 +8,15 @@ class DatabaseService {
   final CollectionReference userCollection =
       Firestore.instance.collection('userData');
 
-  Future updateUserData(double latitude, double longitude, bool alerter ,bool alerted, bool responder) async {
+  Future updateUserData(double latitude, double longitude, bool alerter ,bool alerted, bool responder, String alertType, int alertLevel) async {
     return await userCollection.document(uid).setData({
       'latitude': latitude,
       'longitude': longitude,
       'alerter': alerter,
       'alerted': alerted,
       'responder': responder,
+      'alertType': alertType,
+      'alertLevel': alertLevel,
     });
   }
 
@@ -28,6 +30,8 @@ class DatabaseService {
         alerter: doc.data['alerter'],
         alerted: doc.data['alerted'],
         responder: doc.data['responder'],
+        alertType: doc.data['alertType'],
+        alertLevel: doc.data['alertLevel'],
       );
     }).toList();
   }

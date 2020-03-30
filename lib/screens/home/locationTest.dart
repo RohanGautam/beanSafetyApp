@@ -68,7 +68,7 @@ class _LocationTestState extends State<LocationTest> {
                   // print("lng : ${userData[index].longitude}");
                   return Center(
                     child: Text(
-                        "User ${userData[index].uid}\nLatitude : ${userData[index].latitude}\nLongitude : ${userData[index].longitude}\nalerter : ${userData[index].alerter}"),
+                        "User ${userData[index].uid}\nLatitude : ${userData[index].latitude}\nLongitude : ${userData[index].longitude}\nalerter : ${userData[index].alerter}\nalertType : ${userData[index].alertType}"),
                   );
                 },
               ),
@@ -77,7 +77,7 @@ class _LocationTestState extends State<LocationTest> {
               child: Text("Send location to db"),
               onPressed: () async {
                 var result = await DatabaseService(uid: user.uid)
-                    .updateUserData(currentLat, currentLng, currentUserData.alerter, currentUserData.alerted, currentUserData.responder);
+                    .updateUserData(currentLat, currentLng, currentUserData.alerter, currentUserData.alerted, currentUserData.responder,currentUserData.alertType,currentUserData.alertLevel);
                 print(result);
               },
             ),
@@ -89,13 +89,15 @@ class _LocationTestState extends State<LocationTest> {
               onPressed: () async {
                 print("Alert- updating statuses: ");
                 // mark self as alerter
+                var alertType = "Medical need";
+                var alertLevel = 3;
                 var r1 = await DatabaseService(uid: user.uid).updateUserData(
-                    currentUserData.latitude, currentUserData.longitude, true, currentUserData.alerted, currentUserData.responder);
+                    currentUserData.latitude, currentUserData.longitude, true, currentUserData.alerted, currentUserData.responder, alertType, alertLevel);
                 // mark everyone else as alerted TODO: alert only those nearby
                 userData.forEach((data) async {
                   if(data.uid!=user.uid){
                     print("Alert- updating ${data.uid} ");
-                    var r2 = await DatabaseService(uid: data.uid).updateUserData(data.latitude, data.longitude, data.alerter, true, data.responder);
+                    var r2 = await DatabaseService(uid: data.uid).updateUserData(data.latitude, data.longitude, data.alerter, true, data.responder, data.alertType, data.alertLevel);
                     print(r2);
                 print('curr database location ${currentUserData.latitude}, ${currentUserData.longitude}');
                   }
@@ -117,11 +119,25 @@ class _LocationTestState extends State<LocationTest> {
               },
             ),
             SizedBox(height: 100),
-            Text(currentUserData.alerted ? "Alerted!!!!" : "Idle"),
+            Text(showNotificationStatus(userData, currentUserData) ),
             SizedBox(height: 100),
           ],
         ),
       ),
     );
   }
+
+  String showNotificationStatus(List<UserData> userData, UserData currentUserData){
+    var alertStatus = "Idle";
+    if(currentUserData.alerted){
+      userData.forEach((data){
+        if(data.alerter == true){
+          alertStatus = "Alerted!!!! type ${data.alertType}, level ${data.alertLevel}";
+        }
+      });
+    }
+    return alertStatus;
+  }
+
+
 }
