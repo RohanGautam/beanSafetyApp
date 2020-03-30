@@ -25,3 +25,6 @@ A new Flutter project.
 
 # References
 * [Hot reload on multiple devices](https://stackoverflow.com/a/58355638)
+* [Pass provider state to another route](https://stackoverflow.com/a/57915045)
+* [Circular button](https://stackoverflow.com/a/51117463)
+* [Adding assets](https://flutter.dev/docs/development/ui/assets-and-images)

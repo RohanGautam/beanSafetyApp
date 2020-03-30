@@ -34,6 +34,7 @@ class _PeerNotifyState extends State<PeerNotify> {
         child: Center(
           child: Column(
             children: <Widget>[
+              alertTypeSelector(),
               RaisedButton(
                 child: Text("Get location"),
                 onPressed: () async {
@@ -56,24 +57,6 @@ class _PeerNotifyState extends State<PeerNotify> {
               Text(
                 locationDisplay,
                 style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text("Location of all users:"),
-              Expanded(
-                // to have listview inside col w/o errors
-                child: ListView.builder(
-                  itemCount: userData.length,
-                  itemBuilder: (context, index) {
-                    // print("lat : ${userData[index].latitude}");
-                    // print("lng : ${userData[index].longitude}");
-                    return Center(
-                      child: Text(
-                          "User ${userData[index].uid}\nLatitude : ${userData[index].latitude}\nLongitude : ${userData[index].longitude}\nalerter : ${userData[index].alerter}\nalertType : ${userData[index].alertType}"),
-                    );
-                  },
-                ),
               ),
               RaisedButton(
                 child: Text("Send location to db"),
@@ -175,6 +158,77 @@ class _PeerNotifyState extends State<PeerNotify> {
                 },
               )
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget alertTypeSelector() {
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            emergencyOptionButton("Harassment", 'assets/assault.png'),
+            emergencyOptionButton("Health", 'assets/health.png'),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            emergencyOptionButton("Accident", 'assets/accident.png'),
+            emergencyOptionButton("Fire", 'assets/fire.png'),
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget emergencyOptionButton(String emName, String imagePath) {
+    return Container(
+      height: 190,
+      width: 190,
+      padding: EdgeInsets.all(5),
+      child: GestureDetector(
+        onTap: () {
+          print("${emName} tapped");
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Color(0xFFF05A22),
+              style: BorderStyle.solid,
+              width: 5.0,
+            ),
+            color: Colors.red[100],
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: <Widget>[
+                Image.asset(imagePath, width: 120, height: 120,),
+                SizedBox(height : 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Center(
+                      child: Text(
+                        emName.toUpperCase(),
+                        style: TextStyle(
+                          color: Color(0xFFF05A22),
+                          fontFamily: 'Montserrat',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
