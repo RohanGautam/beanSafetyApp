@@ -134,9 +134,9 @@ class _PeerNotifyState extends State<PeerNotify> {
                   });
                 },
               ),
-              SizedBox(height: 100),
+            
               Text(showNotificationStatus(userData, currentUserData)),
-              SizedBox(height: 50),
+              
               RaisedButton(
                 child: Text(
                   "Respond",
@@ -185,6 +185,33 @@ class _PeerNotifyState extends State<PeerNotify> {
     );
   }
 
+  var selectedBorderColor = Color(0xFFF05A22);
+  var borderRadius = BorderRadius.circular(30.0);
+  var colorMap = {
+    'harassment' : Color(0xFFF05A22),
+    'health' : Color(0xFFF05A22),
+    'accident' : Color(0xFFF05A22),
+    'fire' : Color(0xFFF05A22),
+  };
+  var currentAlertType;
+  updateBorderColor(String emName){
+    colorMap.forEach((alertType, color){
+      if(alertType == emName.toLowerCase()){
+        setState(() {
+          colorMap[alertType] = Colors.blue[400];          
+        });
+      }
+      else{
+        setState(() {
+          colorMap[alertType] = Color(0xFFF05A22);                
+        });
+      }
+    });
+  }
+  Color getBorderColor(String emName){
+    return colorMap[emName.toLowerCase()];
+  }
+
   Widget emergencyOptionButton(String emName, String imagePath) {
     return Container(
       height: 190,
@@ -193,23 +220,29 @@ class _PeerNotifyState extends State<PeerNotify> {
       child: GestureDetector(
         onTap: () {
           print("${emName} tapped");
+          currentAlertType = emName;
+          updateBorderColor(emName);
         },
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: Color(0xFFF05A22),
+              color: getBorderColor(emName),
               style: BorderStyle.solid,
               width: 5.0,
             ),
             color: Colors.red[100],
-            borderRadius: BorderRadius.circular(30.0),
+            borderRadius: borderRadius,
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: <Widget>[
-                Image.asset(imagePath, width: 120, height: 120,),
-                SizedBox(height : 10),
+                Image.asset(
+                  imagePath,
+                  width: 120,
+                  height: 120,
+                ),
+                SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
