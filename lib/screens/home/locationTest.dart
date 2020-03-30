@@ -89,6 +89,15 @@ class _LocationTestState extends State<LocationTest> {
               },
             ),
             RaisedButton(
+              child: Text("Reset all data"),
+              onPressed: () async {
+                userData.forEach((data) async {
+                  await DatabaseService(uid: data.uid)
+                      .updateUserData(0.0, 0.0, false, false, false, "none", 0);
+                });
+              },
+            ),
+            RaisedButton(
               child: Text(
                 "Alert",
                 style: TextStyle(fontSize: 50),
@@ -142,13 +151,26 @@ class _LocationTestState extends State<LocationTest> {
             ),
             SizedBox(height: 100),
             Text(showNotificationStatus(userData, currentUserData)),
-            SizedBox(height: 100),
+            SizedBox(height: 50),
             RaisedButton(
               child: Text(
-                "Alert",
+                "Respond",
                 style: TextStyle(fontSize: 50),
               ),
-              onPressed: () async {},
+              onPressed: () async {
+                // mark self as responder
+                var alertType = "Medical need";
+                var alertLevel = 3;
+                var r1 = await DatabaseService(uid: user.uid).updateUserData(
+                  currentUserData.latitude,
+                  currentUserData.longitude,
+                  currentUserData.alerter,
+                  currentUserData.alerted,
+                  true,
+                  alertType,
+                  alertLevel,
+                );
+              },
             )
           ],
         ),
@@ -167,6 +189,11 @@ class _LocationTestState extends State<LocationTest> {
         }
       });
     }
+    userData.forEach((data) {
+      if (data.responder == true && (data.uid != currentUserData.uid)) {
+        alertStatus += "\nResponder ${data.uid} on the way";
+      }
+    });
     return alertStatus;
   }
 }
