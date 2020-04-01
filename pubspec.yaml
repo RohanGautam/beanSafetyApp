@@ -27,6 +27,7 @@ dependencies:
   firebase_auth: ^0.14.0+5
   cloud_firestore: ^0.12.9+4
   provider: ^3.1.0
+  firebase_messaging: ^6.0.13
   # loading widget
   flutter_spinkit : ^4.0.0
   # location and map related
