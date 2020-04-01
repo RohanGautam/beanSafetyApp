@@ -45,19 +45,6 @@ class Home extends StatelessWidget {
                                 )),
                       );
                     }),
-                RaisedButton(
-                    child: Text("Google Maps"),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MapDirections(
-                                    sLat: 45.521563,
-                                    sLng: -122.677433,
-                                    dLat: 45.621563,
-                                    dLng: -122.777433,
-                                  )));
-                    })
               ],
             ),
           ),
