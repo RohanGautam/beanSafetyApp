@@ -30,3 +30,4 @@ A new Flutter project.
 * [Circular button](https://stackoverflow.com/a/51117463)
 * [Adding assets](https://flutter.dev/docs/development/ui/assets-and-images)
 * [Get directions from A to B in google maps](https://medium.com/flutter-community/drawing-route-lines-on-google-maps-between-two-locations-in-flutter-4d351733ccbe)
+* [Making a page scrollable](https://stackoverflow.com/a/51773359)
