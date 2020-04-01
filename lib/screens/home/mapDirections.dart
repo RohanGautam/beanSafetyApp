@@ -41,6 +41,7 @@ class _MapDirectionsState extends State<MapDirections> {
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
               height: 2 * deviceHeight / 3,
@@ -59,28 +60,42 @@ class _MapDirectionsState extends State<MapDirections> {
                 ),
               ),
             ),
-            RaisedButton(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Watch tutorial',
-                  style: TextStyle(fontSize: 40, color: Colors.white),
-                ),
-              ),
-              color: Colors.deepPurpleAccent,
-              shape: new RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                      ),
-              onPressed: _launchURL,
-            )
+            launchURLButton("Watch tutorial", _launchURL, Colors.deepOrange[300]),
+            launchURLButton("Call alerter", _launchTelephoneURL,Colors.deepPurple[500]),
           ],
         ),
       ),
     );
   }
 
+  Widget launchURLButton(text, onPressed, color) {
+    return RaisedButton(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 40, color: Colors.white),
+        ),
+      ),
+      color: color,
+      shape: new RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(50.0),
+      ),
+      onPressed: onPressed,
+    );
+  }
+
   _launchURL() async {
     const url = 'https://www.youtube.com/watch?v=TUxusK-X1JU';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  _launchTelephoneURL() async {
+    const url = 'tel:12345678';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
