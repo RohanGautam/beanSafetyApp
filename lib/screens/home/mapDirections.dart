@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MapDirections extends StatefulWidget {
   final sLat;
   final sLng;
   final dLat;
   final dLng;
-  
+
   MapDirections({this.sLat, this.sLng, this.dLat, this.dLng});
-  
+
   @override
   _MapDirectionsState createState() => _MapDirectionsState();
 }
@@ -17,8 +18,9 @@ class MapDirections extends StatefulWidget {
 class _MapDirectionsState extends State<MapDirections> {
   GoogleMapController mapController;
   final LatLng _center = const LatLng(37.4219983, -122.084);
-  LatLng SOURCE_LOCATION;// =  LatLng(double.parse(widget.sLat), double.parse(widget.sLng));
-  LatLng DEST_LOCATION ;//= const LatLng(45.621563, -122.777433);
+  LatLng
+      SOURCE_LOCATION; // =  LatLng(double.parse(widget.sLat), double.parse(widget.sLng));
+  LatLng DEST_LOCATION; //= const LatLng(45.621563, -122.777433);
 // this will hold the generated pconstolylines
   Set<Marker> _markers = {};
   // this will hold each polyline coordinate as Lat and Lng pairs
@@ -38,25 +40,52 @@ class _MapDirectionsState extends State<MapDirections> {
         title: Text('Maps Sample App'),
       ),
       body: Center(
-        child: Container(
-          height: 2 * deviceHeight / 3,
-          width: deviceWidth - 20,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GoogleMap(
-              onMapCreated: _onMapCreated,
-              myLocationEnabled :true,
-              markers: _markers,
-              polylines: _polylines,
-              initialCameraPosition: CameraPosition(
-                target: _center,
-                zoom: 11.0,
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 2 * deviceHeight / 3,
+              width: deviceWidth - 20,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  myLocationEnabled: true,
+                  markers: _markers,
+                  polylines: _polylines,
+                  initialCameraPosition: CameraPosition(
+                    target: _center,
+                    zoom: 11.0,
+                  ),
+                ),
               ),
             ),
-          ),
+            RaisedButton(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Watch tutorial',
+                  style: TextStyle(fontSize: 40, color: Colors.white),
+                ),
+              ),
+              color: Colors.deepPurpleAccent,
+              shape: new RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.0),
+                      ),
+              onPressed: _launchURL,
+            )
+          ],
         ),
       ),
     );
+  }
+
+  _launchURL() async {
+    const url = 'https://www.youtube.com/watch?v=TUxusK-X1JU';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   void _onMapCreated(GoogleMapController controller) {
