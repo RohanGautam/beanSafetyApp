@@ -152,6 +152,10 @@ class _PeerNotifyState extends State<PeerNotify> {
                   ),
                   RaisedButton(
                     child: Text("Go"),
+                    color: Colors.amber,
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: buttonBorderRadius,
+                    ),
                     onPressed: currentUserData.responder == false
                         ? null
                         : () {
