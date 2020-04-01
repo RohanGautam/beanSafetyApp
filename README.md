@@ -18,7 +18,8 @@ A new Flutter project.
 * getters are usually used for stream definition, so other classes just call this getter.
 * make sure streams are getting updated with the data they are listening to changes for
 * Can actually have more than 1 emulator running, with each acting as a seperate user.
- 
+
+# TODO: remove api key from `android/app/src/main/AndroidManifest.xml`
 
 # Login process
 ![img](doc_images/loginprocess.png)

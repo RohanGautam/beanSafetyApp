@@ -1,4 +1,5 @@
 import 'package:firebase_tutorial/models/userData.dart';
+import 'package:firebase_tutorial/screens/home/mapDirections.dart';
 import 'package:firebase_tutorial/screens/home/peerNotify.dart';
 import 'package:firebase_tutorial/services/auth.dart';
 import 'package:firebase_tutorial/services/database.dart';
@@ -30,17 +31,27 @@ class Home extends StatelessWidget {
         ),
         body: Container(
           child: Center(
-            child: RaisedButton(
-              child: Text("Peer Notification"),
-              onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => StreamProvider.value(
-                  value: DatabaseService().userDataStream,
-                  child: PeerNotify(),
-                )),
-              );
-            }),
+            child: Column(
+              children: <Widget>[
+                RaisedButton(
+                  child: Text("Peer Notification"),
+                  onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => StreamProvider.value(
+                      value: DatabaseService().userDataStream,
+                      child: PeerNotify(),
+                    )),
+                  );
+                }),
+                RaisedButton(
+                  child: Text("Google Maps"),
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MapDirections()));
+                  }
+                )
+              ],
+            ),
           ),
         ),
       ),
