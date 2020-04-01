@@ -5,6 +5,8 @@ import 'package:firebase_tutorial/services/currentLocation.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_tutorial/services/database.dart';
 
+import 'mapDirections.dart';
+
 class PeerNotify extends StatefulWidget {
   @override
   _PeerNotifyState createState() => _PeerNotifyState();
@@ -117,29 +119,61 @@ class _PeerNotifyState extends State<PeerNotify> {
                       },
               ),
               Text(showNotificationStatus(userData, currentUserData)),
-              RaisedButton(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Respond",
-                    style: TextStyle(fontSize: 50),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  RaisedButton(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Respond",
+                        style: TextStyle(fontSize: 50),
+                      ),
+                    ),
+                    color: Colors.amber,
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: buttonBorderRadius,
+                    ),
+                    onPressed: () async {
+                      print("Respond- updating location: ");
+                      var _locres =
+                          await getAndUpdateLocation(currentUserData, user);
+                      var r1 =
+                          await DatabaseService(uid: user.uid).updateUserData(
+                        currentUserData.latitude,
+                        currentUserData.longitude,
+                        currentUserData.alerter,
+                        currentUserData.alerted,
+                        true,
+                        currentUserData.alertType,
+                        currentUserData.alertLevel,
+                      );
+                    },
                   ),
-                ),
-                color: Colors.amber,
-                shape: new RoundedRectangleBorder(
-                  borderRadius: buttonBorderRadius,                  
-                ),
-                onPressed: () async {
-                  var r1 = await DatabaseService(uid: user.uid).updateUserData(
-                    currentUserData.latitude,
-                    currentUserData.longitude,
-                    currentUserData.alerter,
-                    currentUserData.alerted,
-                    true,
-                    currentUserData.alertType,
-                    currentUserData.alertLevel,
-                  );
-                },
+                  RaisedButton(
+                    child: Text("Go"),
+                    onPressed: currentUserData.responder == false
+                        ? null
+                        : () {
+                            var dLat, dLng;
+                            userData.forEach((data) {
+                              if (data.alerter == true) {
+                                dLat = data.latitude;
+                                dLng = data.longitude;
+                              }
+                            });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MapDirections(
+                                          sLat: currentLat,
+                                          sLng: currentLng,
+                                          dLat: dLat + 0.1, //TODO : remove this, is for testing
+                                          dLng: dLng + 0.1,
+                                        )));
+                          },
+                  )
+                ],
               )
             ],
           ),
@@ -324,8 +358,7 @@ class _PeerNotifyState extends State<PeerNotify> {
     if (currentUserData.alerted) {
       userData.forEach((data) {
         if (data.alerter == true) {
-          alertStatus =
-              "Alerted!!!! type ${data.alertType}, level ${data.alertLevel}, location ${data.latitude}, ${data.longitude}";
+          alertStatus = "location ${data.latitude}, ${data.longitude}";
         }
       });
     }

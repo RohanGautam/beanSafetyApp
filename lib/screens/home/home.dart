@@ -34,22 +34,30 @@ class Home extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 RaisedButton(
-                  child: Text("Peer Notification"),
-                  onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => StreamProvider.value(
-                      value: DatabaseService().userDataStream,
-                      child: PeerNotify(),
-                    )),
-                  );
-                }),
+                    child: Text("Peer Notification"),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => StreamProvider.value(
+                                  value: DatabaseService().userDataStream,
+                                  child: PeerNotify(),
+                                )),
+                      );
+                    }),
                 RaisedButton(
-                  child: Text("Google Maps"),
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => MapDirections()));
-                  }
-                )
+                    child: Text("Google Maps"),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MapDirections(
+                                    sLat: 45.521563,
+                                    sLng: -122.677433,
+                                    dLat: 45.621563,
+                                    dLng: -122.777433,
+                                  )));
+                    })
               ],
             ),
           ),
