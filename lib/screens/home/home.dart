@@ -7,6 +7,8 @@ import 'package:firebase_tutorial/shared/customButton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'alertMe.dart';
+
 class Home extends StatelessWidget {
   final AuthService _auth = AuthService();
 
@@ -34,31 +36,35 @@ class Home extends StatelessWidget {
           child: Center(
             child: Column(
               children: <Widget>[
-                CustomButton(
-                  text: 'Peer Notification',
-                  mpr: MaterialPageRoute(
+                buttonInSizedBox('Alert Me', MaterialPageRoute(builder: (context) => AlertMe())),
+                buttonInSizedBox('Emergency Services', MaterialPageRoute(builder: (context) => AlertMe())),
+                buttonInSizedBox(
+                  'Peer Notification',
+                  MaterialPageRoute(
                       builder: (context) => StreamProvider.value(
                             value: DatabaseService().userDataStream,
                             child: PeerNotify(),
                           )),
                 ),
-                RaisedButton(
-                    child: Text("Peer Notification"),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => StreamProvider.value(
-                                  value: DatabaseService().userDataStream,
-                                  child: PeerNotify(),
-                                )),
-                      );
-                    }),
+                buttonInSizedBox('Emergency contacts', MaterialPageRoute(builder: (context) => AlertMe())),
+                
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget buttonInSizedBox(var text, var mpr) {
+    return Column(
+      children: <Widget>[
+        SizedBox(height: 40),
+        SizedBox(
+            width: 200.0,
+            height: 70.0,
+            child: CustomButton(text: text, mpr: mpr))
+      ],
     );
   }
 }
