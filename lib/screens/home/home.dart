@@ -1,4 +1,5 @@
 import 'package:firebase_tutorial/models/userData.dart';
+import 'package:firebase_tutorial/screens/home/emergencyContacts.dart';
 import 'package:firebase_tutorial/screens/home/mapDirections.dart';
 import 'package:firebase_tutorial/screens/home/peerNotify.dart';
 import 'package:firebase_tutorial/services/auth.dart';
@@ -36,8 +37,11 @@ class Home extends StatelessWidget {
           child: Center(
             child: Column(
               children: <Widget>[
-                buttonInSizedBox('Alert Me', MaterialPageRoute(builder: (context) => AlertMe())),
-                buttonInSizedBox('Emergency Services', MaterialPageRoute(builder: (context) => AlertMe())),
+                beansDisplay(),
+                buttonInSizedBox('Alert Me',
+                    MaterialPageRoute(builder: (context) => AlertMe())),
+                buttonInSizedBox('Emergency Services',
+                    MaterialPageRoute(builder: (context) => AlertMe())),
                 buttonInSizedBox(
                   'Peer Notification',
                   MaterialPageRoute(
@@ -46,8 +50,8 @@ class Home extends StatelessWidget {
                             child: PeerNotify(),
                           )),
                 ),
-                buttonInSizedBox('Emergency contacts', MaterialPageRoute(builder: (context) => AlertMe())),
-                
+                buttonInSizedBox('Emergency contacts',
+                    MaterialPageRoute(builder: (context) => EmergencyContacts())),
               ],
             ),
           ),
@@ -64,6 +68,17 @@ class Home extends StatelessWidget {
             width: 200.0,
             height: 70.0,
             child: CustomButton(text: text, mpr: mpr))
+      ],
+    );
+  }
+
+  Widget beansDisplay() {
+    return Column(
+      children: <Widget>[
+        SizedBox(height: 20),
+        Text("B.E.A.N.S".toUpperCase(),
+            textAlign: TextAlign.center,
+            style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0)),
       ],
     );
   }
