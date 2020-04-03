@@ -18,6 +18,7 @@ A new Flutter project.
 * getters are usually used for stream definition, so other classes just call this getter.
 * make sure streams are getting updated with the data they are listening to changes for
 * Can actually have more than 1 emulator running, with each acting as a seperate user.
+* `flutter clean` when you have no clue on why your app won't build.
 
 # TODO: remove api key from `android/app/src/main/AndroidManifest.xml`
 
@@ -33,3 +34,4 @@ A new Flutter project.
 * [Making a page scrollable](https://stackoverflow.com/a/51773359)
 * [Push notifications with flutter](https://www.youtube.com/watch?v=Lq9-DPKWtIc). Can send notification on firebase console > Cloud messaging
 * [Firebase puch notification to custom user](https://www.youtube.com/watch?v=2TSm2YGBT1s). Seems to use Typescript to define a custom cloud function. Unnessessarily complicated.
+* [bugfix: gradle has no permission](https://stackoverflow.com/a/58998688)

@@ -3,6 +3,7 @@ import 'package:firebase_tutorial/screens/home/mapDirections.dart';
 import 'package:firebase_tutorial/screens/home/peerNotify.dart';
 import 'package:firebase_tutorial/services/auth.dart';
 import 'package:firebase_tutorial/services/database.dart';
+import 'package:firebase_tutorial/shared/customButton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,6 +34,14 @@ class Home extends StatelessWidget {
           child: Center(
             child: Column(
               children: <Widget>[
+                CustomButton(
+                  text: 'Peer Notification',
+                  mpr: MaterialPageRoute(
+                      builder: (context) => StreamProvider.value(
+                            value: DatabaseService().userDataStream,
+                            child: PeerNotify(),
+                          )),
+                ),
                 RaisedButton(
                     child: Text("Peer Notification"),
                     onPressed: () {
