@@ -17,8 +17,9 @@ exports.notifyUser = functions.https.onCall(
                     body: `You are ${doc.id}. Thanks for your contribution!`,
                     clickAction: 'FLUTTER_NOTIFICATION'
                 }
-            }
-            const result = await fcm.sendToDevice(doc.id, notificationPayload);
+            };
+            const fcmToken = doc.data()['fcmToken'];
+            const result = await fcm.sendToDevice(fcmToken, notificationPayload);
             console.log(`Send notification result : ${result}`)
            })
         }).catch(function(error) {

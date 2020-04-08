@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_tutorial/models/user.dart';
 import 'package:firebase_tutorial/services/database.dart';
+import 'package:firebase_tutorial/services/pushNotification.dart';
 
 class AuthService {
   // Will have all the methods to interact with firebase
 
   final FirebaseAuth _auth = FirebaseAuth.instance; // _ means it's private
+  PushNotificationService pns = PushNotificationService();
 
   //Create custom user obj based on firebase user
   User _userFromFirebaseUser(FirebaseUser user) {
@@ -50,9 +52,12 @@ class AuthService {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
-
+      // initialize push notification service
+      await pns.initialize();
+      DatabaseService userDb = DatabaseService(uid: user.uid);
+      userDb.setFcmToken(await pns.getDeviceToken());
       // create new document for user with uid
-      await DatabaseService(uid: user.uid).updateUserData(0.0, 0.0, false, false, false, "none", 0); // 'default' values
+      await userDb.updateUserData(0.0, 0.0, false, false, false, "none", 0); // 'default' values
 
       return _userFromFirebaseUser(user);
     } catch (e) {
