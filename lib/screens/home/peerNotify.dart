@@ -1,3 +1,4 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_tutorial/models/user.dart';
 import 'package:firebase_tutorial/models/userData.dart';
 import 'package:flutter/material.dart';
@@ -36,14 +37,24 @@ class _PeerNotifyState extends State<PeerNotify> {
         title: Text("Peer Notify"),
         actions: <Widget>[
           FlatButton.icon(
-              onPressed: () async {
-                userData.forEach((data) async {
-                  await DatabaseService(uid: data.uid)
-                      .updateUserData(0.0, 0.0, false, false, false, "none", 0);
-                });
-              },
-              icon: Icon(Icons.restore_from_trash),
-              label: Text("Clear data"))
+            onPressed: () async {
+              userData.forEach((data) async {
+                await DatabaseService(uid: data.uid)
+                    .updateUserData(0.0, 0.0, false, false, false, "none", 0);
+              });
+            },
+            icon: Icon(Icons.restore_from_trash),
+            label: Text("Clear data"),
+          ),
+          FlatButton.icon(
+            onPressed: () async {
+              final HttpsCallable notifyUser = CloudFunctions.instance.getHttpsCallable(functionName: 'notifyUser');
+              var resp = await notifyUser.call(<String, dynamic>{'customkey':'customval'});
+              print("response from cloud function: ${resp.data}");
+            },
+            icon: Icon(Icons.notification_important),
+            label: Text("Send Notification"),
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -365,7 +376,8 @@ class _PeerNotifyState extends State<PeerNotify> {
     if (currentUserData.alerted) {
       userData.forEach((data) {
         if (data.alerter == true) {
-          alertStatus = "Alerted!!!! type ${data.alertType}, level ${data.alertLevel} location ${data.latitude}, ${data.longitude}";
+          alertStatus =
+              "Alerted!!!! type ${data.alertType}, level ${data.alertLevel} location ${data.latitude}, ${data.longitude}";
         }
       });
     }

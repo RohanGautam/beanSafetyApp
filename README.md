@@ -19,11 +19,13 @@ A new Flutter project.
 * make sure streams are getting updated with the data they are listening to changes for
 * Can actually have more than 1 emulator running, with each acting as a seperate user.
 * `flutter clean` when you have no clue on why your app won't build.
+* Make sure returned value from firebase cloud function,eg, in `index.ts`, is JSON-serialisable.
 
 # TODO: remove api key from `android/app/src/main/AndroidManifest.xml`
 
 # Login process
 ![img](doc_images/loginprocess.png)
+
 
 # References
 * [Hot reload on multiple devices](https://stackoverflow.com/a/58355638)
@@ -35,3 +37,6 @@ A new Flutter project.
 * [Push notifications with flutter](https://www.youtube.com/watch?v=Lq9-DPKWtIc). Can send notification on firebase console > Cloud messaging
 * [Firebase puch notification to custom user](https://www.youtube.com/watch?v=2TSm2YGBT1s). Seems to use Typescript to define a custom cloud function. Unnessessarily complicated.
 * [bugfix: gradle has no permission](https://stackoverflow.com/a/58998688)
+* [Set up Firebase CLI](https://firebase.google.com/docs/functions/get-started)
+* Set up firebase functions in project root using `firebase init functions`, and after adding function run `firebase deploy`
+* [Firebase versioning error fix](https://stackoverflow.com/a/51846868)
