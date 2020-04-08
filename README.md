@@ -20,6 +20,7 @@ A new Flutter project.
 * Can actually have more than 1 emulator running, with each acting as a seperate user.
 * `flutter clean` when you have no clue on why your app won't build.
 * Make sure returned value from firebase cloud function,eg, in `index.ts`, is JSON-serialisable.
+* Devices are identified with a `fcm` (got in `getDeviceToken` in `pushNotification.dart`). You can't use the the Firebase Auth uid as the fcm. Gotta store and use it seperately.
 
 # TODO: remove api key from `android/app/src/main/AndroidManifest.xml`
 
@@ -36,7 +37,10 @@ A new Flutter project.
 * [Making a page scrollable](https://stackoverflow.com/a/51773359)
 * [Push notifications with flutter](https://www.youtube.com/watch?v=Lq9-DPKWtIc). Can send notification on firebase console > Cloud messaging
 * [Firebase puch notification to custom user](https://www.youtube.com/watch?v=2TSm2YGBT1s). Seems to use Typescript to define a custom cloud function. Unnessessarily complicated.
+* [Firebase custom fn tutorial](https://medium.com/@jackwong_60367/cloud-function-flutter-128b8c3695b4)
+* [Firebase cloud fns on pub.dev](https://pub.dev/packages/cloud_functions#-readme-tab-)
 * [bugfix: gradle has no permission](https://stackoverflow.com/a/58998688)
 * [Set up Firebase CLI](https://firebase.google.com/docs/functions/get-started)
 * Set up firebase functions in project root using `firebase init functions`, and after adding function run `firebase deploy`
 * [Firebase versioning error fix](https://stackoverflow.com/a/51846868)
+* [Get documents from firestore collection : typescript](https://firebase.google.com/docs/firestore/query-data/get-data#get_multiple_documents_from_a_collection)
