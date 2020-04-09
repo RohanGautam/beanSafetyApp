@@ -21,6 +21,7 @@
 * `flutter clean` when you have no clue on why your app won't build.
 * Make sure returned value from firebase cloud function,eg, in `index.ts`, is JSON-serialisable.
 * Devices are identified with a `fcm` (got in `getDeviceToken` in `pushNotification.dart`). You can't use the the Firebase Auth uid as the fcm. Gotta store and use it seperately.
+* Sometimes users will have to be re-registered for fcm token to be valid. (Do this if the notifications are not working)
 
 # TODO: 
 * remove api key from `android/app/src/main/AndroidManifest.xml` and everywhere else after project is over.
@@ -55,3 +56,4 @@
 * [Rename app](https://stackoverflow.com/a/56039224) 
 * Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
 * [Change app icon](https://pub.dev/packages/flutter_launcher_icons)
+* [Pass scaffold context with key](https://stackoverflow.com/a/53889100)

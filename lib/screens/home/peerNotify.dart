@@ -14,13 +14,14 @@ class PeerNotify extends StatefulWidget {
 }
 
 class _PeerNotifyState extends State<PeerNotify> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   String locationDisplay = '';
   // var location = {'latitude': 0.0, 'longitude': 0.0};
   var currentLat = 0.0;
   var currentLng = 0.0;
   String currentAlertType;
-  int currentAlertLevel;  
-  
+  int currentAlertLevel;
+
   @override
   Widget build(BuildContext context) {
     var buttonBorderRadius = BorderRadius.circular(50.0);
@@ -35,6 +36,7 @@ class _PeerNotifyState extends State<PeerNotify> {
     DatabaseService userDb = DatabaseService(uid: user.uid);
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text("PEER NOTIFY"),
         centerTitle: true,
@@ -54,7 +56,7 @@ class _PeerNotifyState extends State<PeerNotify> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height ,
+          height: MediaQuery.of(context).size.height,
           child: Center(
             child: Column(
               children: <Widget>[
@@ -78,20 +80,19 @@ class _PeerNotifyState extends State<PeerNotify> {
                       ? null
                       : () async {
                           print("Alert- updating location: ");
-                          var _locres =
-                              await getAndUpdateLocation(currentUserData, user, userDb);
+                          var _locres = await getAndUpdateLocation(
+                              currentUserData, user, userDb);
                           print("Location got and updated : $_locres}");
                           print("Alert- updating statuses: ");
                           // mark self as alerter
-                          var r1 = await userDb
-                              .updateUserData(
-                                  currentLat,
-                                  currentLng,
-                                  true,
-                                  currentUserData.alerted,
-                                  currentUserData.responder,
-                                  currentAlertType,
-                                  currentAlertLevel);
+                          var r1 = await userDb.updateUserData(
+                              currentLat,
+                              currentLng,
+                              true,
+                              currentUserData.alerted,
+                              currentUserData.responder,
+                              currentAlertType,
+                              currentAlertLevel);
                           // mark everyone else as alerted TODO: alert only those nearby
                           userData.forEach((data) async {
                             if (data.uid != user.uid) {
@@ -111,10 +112,12 @@ class _PeerNotifyState extends State<PeerNotify> {
                             }
                           });
                           print("Alert- sending notification");
-                          sendAlertNotification(user.uid,currentAlertType,currentAlertLevel);
+                          sendAlertNotification(
+                              user.uid, currentAlertType, currentAlertLevel);
                         },
                 ),
-                Text(showNotificationStatus(userData, currentUserData)),
+                Text(
+                    showNotificationStatus(userData, currentUserData, _scaffoldKey)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -132,10 +135,9 @@ class _PeerNotifyState extends State<PeerNotify> {
                       ),
                       onPressed: () async {
                         print("Respond- updating location: ");
-                        var _locres =
-                            await getAndUpdateLocation(currentUserData, user, userDb);
-                        var r1 =
-                            await userDb.updateUserData(
+                        var _locres = await getAndUpdateLocation(
+                            currentUserData, user, userDb);
+                        var r1 = await userDb.updateUserData(
                           currentUserData.latitude,
                           currentUserData.longitude,
                           currentUserData.alerter,
@@ -184,7 +186,8 @@ class _PeerNotifyState extends State<PeerNotify> {
     );
   }
 
-  Future<bool> getAndUpdateLocation(UserData currentUserData, User user, DatabaseService userDb) async {
+  Future<bool> getAndUpdateLocation(
+      UserData currentUserData, User user, DatabaseService userDb) async {
     // get users location
     var location = await CurrentLocation().getCurrentLocation();
     if (location != null) {
@@ -356,31 +359,42 @@ class _PeerNotifyState extends State<PeerNotify> {
   }
 
   String showNotificationStatus(
-      List<UserData> userData, UserData currentUserData) {
+      List<UserData> userData, UserData currentUserData, var scaffoldKey) {
     var alertStatus = "Idle";
-    if (currentUserData.alerted) {
+    if (currentUserData.alerted && currentUserData.responder==false) {
       userData.forEach((data) {
         if (data.alerter == true) {
           alertStatus =
               "Alerted!!!! type ${data.alertType}, level ${data.alertLevel} location ${data.latitude}, ${data.longitude}";
+          // scaffoldKey.currentState.showSnackBar(customSnackBar(alertStatus, () {
+          //   scaffoldKey.currentState.hideCurrentSnackBar();
+          // }));
         }
       });
     }
     userData.forEach((data) {
       if (data.responder == true && (data.uid != currentUserData.uid)) {
-        alertStatus += "\nResponder ${data.uid} on the way";
+        alertStatus = "\nResponder ${data.uid} on the way";
       }
     });
     return alertStatus;
   }
 
+  Widget customSnackBar(String text, var onPressed) {
+    return SnackBar(
+      content: Text(text),
+      action: SnackBarAction(label: "Dismiss", onPressed: onPressed),
+    );
+  }
 
-  sendAlertNotification(var from, var currentAlertType, var currentAlertLevel) async {
-    final HttpsCallable notifyUser = CloudFunctions.instance.getHttpsCallable(functionName: 'notifyUser');
+  sendAlertNotification(
+      var from, var currentAlertType, var currentAlertLevel) async {
+    final HttpsCallable notifyUser =
+        CloudFunctions.instance.getHttpsCallable(functionName: 'notifyUser');
     var resp = await notifyUser.call(<String, dynamic>{
-      'from' : from,
+      'from': from,
       'alertType': currentAlertType,
-      'alertLevel':currentAlertLevel
+      'alertLevel': currentAlertLevel
     });
     print("response from cloud function: ${resp.data}");
   }

@@ -20,7 +20,10 @@ exports.notifyUser = functions.https.onCall(
             };
             const fcmToken = doc.data()['fcmToken'];
             const result = await fcm.sendToDevice(fcmToken, notificationPayload);
-            console.log(`Send notification result : ${result}`)
+            console.log(`Send notification result success count: ${result.successCount}`)
+            result.results.forEach(function(x){
+                console.log(x.error);                
+            })
            })
         }).catch(function(error) {
             console.log("Error getting document:", error);
