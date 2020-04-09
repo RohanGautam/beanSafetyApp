@@ -78,7 +78,7 @@ class Home extends StatelessWidget {
                     icon: IconData(57347, fontFamily: 'MaterialIcons'),
                     mpr:
                     MaterialPageRoute(
-                        builder: (context) => EmergencyContacts()),
+                        builder: (context) => AlertMeUI()),
                     text: 'ALERT ME',
                   ),
                   RoundIconButton(

@@ -43,6 +43,11 @@ dependencies:
   preferences: ^5.1.0
   dynamic_theme: ^1.0.0
   validators: ^2.0.0
+  # from ui-merge
+  background_fetch: ^0.5.1
+  flutter_local_notifications: ^1.4.0
+  geojson: ^0.9.1
+  google_map_polyutil: ^1.0.0
 
   
 dev_dependencies:
@@ -68,11 +73,19 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/accident.png
-   - assets/assault.png
-   - assets/fire.png
-   - assets/health.png
-   - assets/jelly_beans.png
+    - assets/accident.png
+    - assets/assault.png
+    - assets/fire.png
+    - assets/health.png
+    - assets/doctor.png
+    - assets/report.png
+    - assets/healthcare-and-medical.png
+    - assets/telephone.png
+    - assets/phone.png
+    - assets/jelly_beans.png
+    - assets/defribillator.png
+    - assets/maps-and-location.png
+    - assets/siren.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
