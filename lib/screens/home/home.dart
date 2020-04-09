@@ -3,6 +3,7 @@ import 'package:firebase_tutorial/screens/home/emergencyContacts.dart';
 import 'package:firebase_tutorial/screens/home/peerNotify.dart';
 import 'package:firebase_tutorial/services/auth.dart';
 import 'package:firebase_tutorial/services/database.dart';
+import 'package:firebase_tutorial/shared/RoundIconButton.dart';
 import 'package:firebase_tutorial/shared/customButton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,9 @@ class Home extends StatelessWidget {
       value: DatabaseService().userDataStream,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Home Page"),
+          title: Text("Home"),
+          centerTitle: true,
+          backgroundColor: Colors.red[400],
           actions: <Widget>[
             FlatButton.icon(
               onPressed: () async {
@@ -32,53 +35,85 @@ class Home extends StatelessWidget {
             )
           ],
         ),
-        body: Container(
-          child: Center(
-            child: Column(
-              children: <Widget>[
-                beansDisplay(),
-                buttonInSizedBox('Alert Me',
-                    MaterialPageRoute(builder: (context) => AlertMe())),
-                buttonInSizedBox('Emergency Services',
-                    MaterialPageRoute(builder: (context) => AlertMe())),
-                buttonInSizedBox(
-                  'Peer Notification',
-                  MaterialPageRoute(
+        body: Stack(
+          children: <Widget>[
+            Positioned(
+                width: MediaQuery.of(context).size.width,
+                top: MediaQuery.of(context).size.width * 0.08,//TRY TO CHANGE THIS **0.30** value to achieve your goal
+                child: Container(
+                  margin: EdgeInsets.all(16.0),
+                  child:Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset(
+                          'assets/jelly_beans.png',
+                          scale: 4.5,
+                        ),
+                        SizedBox(height: 20.0),
+                        Text('B.E.A.N.S.',
+                            style: TextStyle(
+                                fontSize: 35.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red[600]
+                            )
+                        ),
+                        SizedBox(height: 10.0,),
+                        Text('Bi-directional Emergency And Notification System',
+                          style: TextStyle(
+                            color: Colors.grey
+                          ),
+                        )
+                      ]
+                  ),
+                )),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10.0, 280.0, 10.0, 0.0),
+              child: GridView.count(
+                crossAxisCount: 2,
+                childAspectRatio: 1.3,
+                //padding: const EdgeInsets.all(10.0),
+                //shrinkWrap: true,
+                children: <Widget>[
+                  RoundIconButton(
+                    icon: IconData(57347, fontFamily: 'MaterialIcons'),
+                    mpr:
+                    MaterialPageRoute(
+                        builder: (context) => EmergencyContacts()),
+                    text: 'ALERT ME',
+                  ),
+                  RoundIconButton(
+                    icon: IconData(57551, fontFamily: 'MaterialIcons'),
+                    mpr:
+                    MaterialPageRoute(
                       builder: (context) => StreamProvider.value(
                             value: DatabaseService().userDataStream,
                             child: PeerNotify(),
                           )),
-                ),
-                buttonInSizedBox('Emergency contacts',
-                    MaterialPageRoute(builder: (context) => EmergencyContacts())),
-              ],
-            ),
-          ),
-        ),
+                    text: 'ALERT OTHERS',
+                  ),
+                  RoundIconButton(
+                    icon: IconData(58727, fontFamily: 'MaterialIcons'),
+                    mpr:
+                    MaterialPageRoute(
+                        builder: (context) => EmergencyContacts()),
+                    text: 'EMERGENCY SERVICES',
+                  ),
+
+                  RoundIconButton(
+                    icon: IconData(57576, fontFamily: 'MaterialIcons'),
+                    mpr:
+                    MaterialPageRoute(
+                        builder: (context) => EmergencyContacts()),
+                    text: 'EMERGENCY CONTACTS',
+                  ),
+                ],
+              ),
+            )
+          ],
+
+        )
+
       ),
-    );
-  }
-
-  Widget buttonInSizedBox(var text, var mpr) {
-    return Column(
-      children: <Widget>[
-        SizedBox(height: 40),
-        SizedBox(
-            width: 200.0,
-            height: 70.0,
-            child: CustomButton(text: text, mpr: mpr))
-      ],
-    );
-  }
-
-  Widget beansDisplay() {
-    return Column(
-      children: <Widget>[
-        SizedBox(height: 20),
-        Text("B.E.A.N.S".toUpperCase(),
-            textAlign: TextAlign.center,
-            style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0)),
-      ],
     );
   }
 }

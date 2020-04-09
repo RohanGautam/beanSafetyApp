@@ -9,7 +9,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
         title: Text(title),
         centerTitle: true,
-        backgroundColor: Colors.red[600],
+        backgroundColor: Colors.red[400],
         actions: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
