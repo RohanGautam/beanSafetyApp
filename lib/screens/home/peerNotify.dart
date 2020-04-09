@@ -36,7 +36,9 @@ class _PeerNotifyState extends State<PeerNotify> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Peer Notify"),
+        title: Text("PEER NOTIFY"),
+        centerTitle: true,
+        backgroundColor: Colors.red[400],
         actions: <Widget>[
           FlatButton.icon(
             onPressed: () async {
@@ -46,7 +48,7 @@ class _PeerNotifyState extends State<PeerNotify> {
               });
             },
             icon: Icon(Icons.restore_from_trash),
-            label: Text("Clear data"),
+            label: Text(""),
           ),
         ],
       ),
