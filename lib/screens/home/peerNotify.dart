@@ -19,8 +19,8 @@ class _PeerNotifyState extends State<PeerNotify> {
   var currentLat = 0.0;
   var currentLng = 0.0;
   String currentAlertType;
-  int currentAlertLevel;
-
+  int currentAlertLevel;  
+  
   @override
   Widget build(BuildContext context) {
     var buttonBorderRadius = BorderRadius.circular(50.0);
@@ -32,6 +32,8 @@ class _PeerNotifyState extends State<PeerNotify> {
         currentUserData = data;
       }
     });
+    DatabaseService userDb = DatabaseService(uid: user.uid);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Peer Notify"),
@@ -45,15 +47,6 @@ class _PeerNotifyState extends State<PeerNotify> {
             },
             icon: Icon(Icons.restore_from_trash),
             label: Text("Clear data"),
-          ),
-          FlatButton.icon(
-            onPressed: () async {
-              final HttpsCallable notifyUser = CloudFunctions.instance.getHttpsCallable(functionName: 'notifyUser');
-              var resp = await notifyUser.call(<String, dynamic>{'customkey':'customval'});
-              print("response from cloud function: ${resp.data}");
-            },
-            icon: Icon(Icons.notification_important),
-            label: Text("Send Notification"),
           ),
         ],
       ),
@@ -83,11 +76,11 @@ class _PeerNotifyState extends State<PeerNotify> {
                       : () async {
                           print("Alert- updating location: ");
                           var _locres =
-                              await getAndUpdateLocation(currentUserData, user);
-                          print("Location got and updated : ${_locres}");
+                              await getAndUpdateLocation(currentUserData, user, userDb);
+                          print("Location got and updated : $_locres}");
                           print("Alert- updating statuses: ");
                           // mark self as alerter
-                          var r1 = await DatabaseService(uid: user.uid)
+                          var r1 = await userDb
                               .updateUserData(
                                   currentLat,
                                   currentLng,
@@ -114,20 +107,8 @@ class _PeerNotifyState extends State<PeerNotify> {
                                   'curr database location ${currentUserData.latitude}, ${currentUserData.longitude}');
                             }
                           });
-                          print("Alert- current info: ");
-                          // UserData
-                          userData.forEach((data) {
-                            if (data.uid == user.uid) {
-                              print("Current user:\n\t${data.uid}");
-                            } else {
-                              print("Other users:\n\t${data.uid}");
-                            }
-                            print("\tlat : ${data.latitude}");
-                            print("\tlng : ${data.longitude}");
-                            print("\talerter : ${data.alerter}");
-                            print("\talerted : ${data.alerted}");
-                            print("\tresponder : ${data.responder}");
-                          });
+                          print("Alert- sending notification");
+                          sendAlertNotification(user.uid,currentAlertType,currentAlertLevel);
                         },
                 ),
                 Text(showNotificationStatus(userData, currentUserData)),
@@ -149,9 +130,9 @@ class _PeerNotifyState extends State<PeerNotify> {
                       onPressed: () async {
                         print("Respond- updating location: ");
                         var _locres =
-                            await getAndUpdateLocation(currentUserData, user);
+                            await getAndUpdateLocation(currentUserData, user, userDb);
                         var r1 =
-                            await DatabaseService(uid: user.uid).updateUserData(
+                            await userDb.updateUserData(
                           currentUserData.latitude,
                           currentUserData.longitude,
                           currentUserData.alerter,
@@ -200,7 +181,7 @@ class _PeerNotifyState extends State<PeerNotify> {
     );
   }
 
-  Future<bool> getAndUpdateLocation(UserData currentUserData, User user) async {
+  Future<bool> getAndUpdateLocation(UserData currentUserData, User user, DatabaseService userDb) async {
     // get users location
     var location = await CurrentLocation().getCurrentLocation();
     if (location != null) {
@@ -219,7 +200,7 @@ class _PeerNotifyState extends State<PeerNotify> {
     // update database
     var result;
     print("${currentLat}, ${currentLng}");
-    result = await DatabaseService(uid: user.uid).updateUserData(
+    result = await userDb.updateUserData(
         currentLat,
         currentLng,
         currentUserData.alerter,
@@ -387,5 +368,16 @@ class _PeerNotifyState extends State<PeerNotify> {
       }
     });
     return alertStatus;
+  }
+
+
+  sendAlertNotification(var from, var currentAlertType, var currentAlertLevel) async {
+    final HttpsCallable notifyUser = CloudFunctions.instance.getHttpsCallable(functionName: 'notifyUser');
+    var resp = await notifyUser.call(<String, dynamic>{
+      'from' : from,
+      'alertType': currentAlertType,
+      'alertLevel':currentAlertLevel
+    });
+    print("response from cloud function: ${resp.data}");
   }
 }

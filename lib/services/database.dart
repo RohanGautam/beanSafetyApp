@@ -8,7 +8,19 @@ class DatabaseService {
   final CollectionReference userCollection =
       Firestore.instance.collection('userData');
 
+  // dont update the fcm token on regular updates
   Future updateUserData(double latitude, double longitude, bool alerter ,bool alerted, bool responder, String alertType, int alertLevel) async {
+    return await userCollection.document(uid).updateData({
+      'latitude': latitude,
+      'longitude': longitude,
+      'alerter': alerter,
+      'alerted': alerted,
+      'responder': responder,
+      'alertType': alertType,
+      'alertLevel': alertLevel,
+    });
+  }
+  Future updateUserDataOnRegister(double latitude, double longitude, bool alerter ,bool alerted, bool responder, String alertType, int alertLevel) async {
     return await userCollection.document(uid).setData({
       'fcmToken':fcmToken,
       'latitude': latitude,

@@ -57,7 +57,7 @@ class AuthService {
       DatabaseService userDb = DatabaseService(uid: user.uid);
       userDb.setFcmToken(await pns.getDeviceToken());
       // create new document for user with uid
-      await userDb.updateUserData(0.0, 0.0, false, false, false, "none", 0); // 'default' values
+      await userDb.updateUserDataOnRegister(0.0, 0.0, false, false, false, "none", 0); // 'default' values
 
       return _userFromFirebaseUser(user);
     } catch (e) {

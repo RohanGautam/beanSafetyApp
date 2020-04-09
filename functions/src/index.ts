@@ -14,7 +14,7 @@ exports.notifyUser = functions.https.onCall(
             const notificationPayload: admin.messaging.MessagingPayload = {
                 notification : {
                     title: 'Alert!',
-                    body: `You are ${doc.id}. Thanks for your contribution!`,
+                    body: `Alert type ${data['alertType']}, level ${data['alertLevel']} from ${data['from']}`,
                     clickAction: 'FLUTTER_NOTIFICATION'
                 }
             };
@@ -26,7 +26,7 @@ exports.notifyUser = functions.https.onCall(
             console.log("Error getting document:", error);
         });
         return {
-            'users': "not yet"
+            'sent': "true"
         };
     }
 );
