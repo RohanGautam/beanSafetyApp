@@ -1,5 +1,6 @@
 import 'package:firebase_tutorial/models/userData.dart';
 import 'package:firebase_tutorial/screens/home/emergencyContacts.dart';
+import 'package:firebase_tutorial/screens/home/emergencyServices.dart';
 import 'package:firebase_tutorial/screens/home/peerNotify.dart';
 import 'package:firebase_tutorial/services/auth.dart';
 import 'package:firebase_tutorial/services/database.dart';
@@ -95,7 +96,7 @@ class Home extends StatelessWidget {
                     icon: IconData(58727, fontFamily: 'MaterialIcons'),
                     mpr:
                     MaterialPageRoute(
-                        builder: (context) => EmergencyContacts()),
+                        builder: (context) => EmergencyServicesUI()),
                     text: 'EMERGENCY SERVICES',
                   ),
 

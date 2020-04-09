@@ -48,6 +48,8 @@ dependencies:
   flutter_local_notifications: ^1.4.0
   geojson: ^0.9.1
   google_map_polyutil: ^1.0.0
+  google_map_polyline: ^0.0.2
+  google_maps_webservice: ^0.0.16
 
   
 dev_dependencies:
@@ -86,6 +88,8 @@ flutter:
     - assets/defribillator.png
     - assets/maps-and-location.png
     - assets/siren.png
+    - assets/siren.png
+    - assets/dengue-clusters-geojson.geojson
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

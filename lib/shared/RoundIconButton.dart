@@ -23,7 +23,7 @@ class RoundIconButton extends StatelessWidget {
           fillColor: Colors.red[400],
           padding: const EdgeInsets.all(25.0),
         ),
-        SizedBox(height: 10.0,),
+        // SizedBox(height: 10.0,),
         Text(text,
         style: TextStyle(
           fontWeight: FontWeight.bold,

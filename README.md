@@ -22,7 +22,13 @@ A new Flutter project.
 * Make sure returned value from firebase cloud function,eg, in `index.ts`, is JSON-serialisable.
 * Devices are identified with a `fcm` (got in `getDeviceToken` in `pushNotification.dart`). You can't use the the Firebase Auth uid as the fcm. Gotta store and use it seperately.
 
-# TODO: remove api key from `android/app/src/main/AndroidManifest.xml`
+# TODO: 
+* remove api key from `android/app/src/main/AndroidManifest.xml` and everywhere else after project is over.
+* check out SizedBox removal in Roundbutton I & II
+* remove setstyle for map from emergency services map
+* fix emergencyservicemap
+* fix cluster showing
+* send weather notifications
 
 # Login process
 ![img](doc_images/loginprocess.png)
