@@ -297,7 +297,7 @@ class _PeerNotifyState extends State<PeerNotify> {
   }
 
   Widget emergencyOptionButton(String emName, String imagePath) {
-    double deviceWidth = (MediaQuery.of(context).size.width / 2) - 20;
+    double deviceWidth = (MediaQuery.of(context).size.width / 2) - 40;
     return Container(
       height: deviceWidth,
       width: deviceWidth,
@@ -337,7 +337,7 @@ class _PeerNotifyState extends State<PeerNotify> {
                         style: TextStyle(
                           color: Color(0xFFF05A22),
                           fontFamily: 'Montserrat',
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 1,
                         ),

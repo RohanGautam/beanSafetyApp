@@ -29,6 +29,8 @@
 * fix emergencyservicemap
 * fix cluster showing
 * send weather notifications
+* use snackbar/dialog for alerting
+
 
 # Login process
 ![img](doc_images/loginprocess.png)

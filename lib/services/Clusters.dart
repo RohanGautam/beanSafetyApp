@@ -23,11 +23,11 @@ class ClustersState extends State<Clusters> {
   GoogleMapController _controller;
   Set<Polyline> _polylines = {};
   List<LatLng> polylineCoordinates = [];
-  List<LatLng> polygonlinecoord = [];
+  //List<LatLng> polygonlinecoord = [];
   Set<Marker> _markers = {};
   Set<Polygon> poly_points = {};
   PolylinePoints polylinePoints = PolylinePoints();
-  Position position = Position(latitude:1.3517256 ,longitude:103.6814406); //setting initial position
+  Position position = Position(latitude: 1.353195 , longitude: 103.681082);
   @override
   void initState() {
     super.initState();
@@ -40,22 +40,19 @@ class ClustersState extends State<Clusters> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: BaseAppBar(title:'Google Maps'),
-      body: GoogleMap(
-          myLocationEnabled: true,
-          compassEnabled: true,
-          tiltGesturesEnabled: false,
-          markers: _markers,
-          polylines: _polylines,
-          polygons: poly_points,
-          mapType: MapType.normal,
-          initialCameraPosition: CameraPosition(
-            target: LatLng(position.latitude, position.longitude),
-            zoom: 12.0,
-          ),
-          onMapCreated: onMapCreated),
-    );
+    return GoogleMap(
+        myLocationEnabled: true,
+        compassEnabled: true,
+        tiltGesturesEnabled: false,
+        markers: _markers,
+        polylines: _polylines,
+        polygons: poly_points,
+        mapType: MapType.normal,
+        initialCameraPosition: CameraPosition(
+          target: LatLng(position.latitude, position.longitude),
+          zoom: 12.0,
+        ),
+        onMapCreated: onMapCreated);
   }
 
   void onMapCreated(GoogleMapController controller) {
@@ -69,14 +66,8 @@ class ClustersState extends State<Clusters> {
     setState(() {
       // source pin
       _markers.add(Marker(
-        markerId: MarkerId('sourcePin'),
+        markerId: MarkerId('current location'),
         position: LatLng(position.latitude, position.longitude),
-        icon: BitmapDescriptor.defaultMarker,
-      ));
-      // destination pin
-      _markers.add(Marker(
-        markerId: MarkerId('destPin'),
-        position: DEST_LOCATION,
         icon: BitmapDescriptor.defaultMarker,
       ));
     });
@@ -114,46 +105,53 @@ class ClustersState extends State<Clusters> {
   }
 
   parsingwjson() async {
+    int m = 0;
     List dummy_data = [];
     bool isInPolygon;
+    List<bool> IsInPolygonList = [];
     String data = await DefaultAssetBundle.of(context)
         .loadString("assets/dengue-clusters-geojson.geojson");
     final jsonResult = json.decode(data);
     dummy_data = jsonResult["features"][0]["geometry"]["coordinates"];
     print('the data parsed is as follows');
     print(jsonResult["features"][0]["geometry"]["coordinates"][0][0]);
+    for (int j = 0; j < jsonResult["features"].length; j++) {
+      List<LatLng> polygonlinecoord = [];
+      isInPolygon = false;
+      for (int i = 0;
+          i < (jsonResult["features"][j]["geometry"]["coordinates"][0]).length;
+          i++) {
+        polygonlinecoord.add(LatLng(
+            jsonResult["features"][j]["geometry"]["coordinates"][0][i][1],
+            jsonResult["features"][j]["geometry"]["coordinates"][0][i][0]));
+      }
+      poly_points.add(Polygon(
+          polygonId: PolygonId("cluster $j"),
+          fillColor: Colors.red[100],
+          points: polygonlinecoord,
+          strokeColor: Colors.red[300],
+          strokeWidth: 5));
 
-    for (int i = 0;
-    i < (jsonResult["features"][0]["geometry"]["coordinates"][0]).length;
-    i++) {
-      polygonlinecoord.add(LatLng(
-          jsonResult["features"][0]["geometry"]["coordinates"][0][i][1],
-          jsonResult["features"][0]["geometry"]["coordinates"][0][i][0]));
+      //the below part needs to be optimized. The part below is for checking if current location lies in the polygon
+
+      /*isInPolygon = await GoogleMapPolyUtil.containsLocation(point: LatLng(position.latitude,position.longitude), polygon: polygonlinecoord);
+     if (isInPolygon==true){
+       print("for this cluster you lie in the dengue area");
+     }
+     */
     }
-
-    Polygon polygonshape = Polygon(
-        polygonId: PolygonId("cluster 0"),
-        fillColor: Colors.red[100],
-        points: polygonlinecoord,
-        strokeColor: Colors.red[300],
-        strokeWidth: 5);
-
-    poly_points.add(polygonshape);
     //to check if containslocation works run below commented line: output will be true, because i have fed in a point that lies within the cluster
     //isInPolygon = await GoogleMapPolyUtil.containsLocation(point: LatLng(1.314530, 103.878397), polygon: polygonlinecoord);
-    isInPolygon = await GoogleMapPolyUtil.containsLocation(
-        point: LatLng(position.latitude, position.longitude),
-        polygon: polygonlinecoord);
-    print("result of point in polygon is: ");
-    print(isInPolygon);
-    /* Polyline polygonline = Polyline(
-          polylineId: PolylineId("poly"),
-          color: Colors.deepPurple,
-          points: polygonlinecoord);
+    /*
 
-      // add the constructed polyline as a set of points
-      // to the polyline set, which will eventually
-      // end up showing up on the map
-      _polylines.add(polygonline);  */
+    print("result of point in polygon is: ");
+    while (m<IsInPolygonList.length){
+      if (IsInPolygonList[m]==true){
+        print("you are in dengue cluster");
+        break;
+      }
+      m++;
+    }
+    */
   }
 }
