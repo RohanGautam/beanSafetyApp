@@ -44,3 +44,5 @@ A new Flutter project.
 * Set up firebase functions in project root using `firebase init functions`, and after adding function run `firebase deploy`
 * [Firebase versioning error fix](https://stackoverflow.com/a/51846868)
 * [Get documents from firestore collection : typescript](https://firebase.google.com/docs/firestore/query-data/get-data#get_multiple_documents_from_a_collection)
+* [Rename app](https://stackoverflow.com/a/56039224) 
+* Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
