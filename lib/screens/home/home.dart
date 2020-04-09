@@ -1,6 +1,5 @@
 import 'package:firebase_tutorial/models/userData.dart';
 import 'package:firebase_tutorial/screens/home/emergencyContacts.dart';
-import 'package:firebase_tutorial/screens/home/mapDirections.dart';
 import 'package:firebase_tutorial/screens/home/peerNotify.dart';
 import 'package:firebase_tutorial/services/auth.dart';
 import 'package:firebase_tutorial/services/database.dart';

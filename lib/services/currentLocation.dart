@@ -1,4 +1,3 @@
-import 'package:firebase_tutorial/models/userData.dart';
 import 'package:geolocator/geolocator.dart';
 
 class CurrentLocation {
