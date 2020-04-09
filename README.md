@@ -1,6 +1,6 @@
-# firebase_tutorial
+# B.E.A.N.S
 
-A new Flutter project.
+![logo](assets/beansAppLogo.png)
 
 
 # Firebase:
