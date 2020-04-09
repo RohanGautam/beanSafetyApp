@@ -15,7 +15,7 @@ exports.notifyUser = functions.https.onCall(
                 notification : {
                     title: 'Alert!',
                     body: `Alert type ${data['alertType']}, level ${data['alertLevel']} from ${data['from']}`,
-                    clickAction: 'FLUTTER_NOTIFICATION'
+                    clickAction: 'FLUTTER_NOTIFICATION_CLICK'
                 }
             };
             const fcmToken = doc.data()['fcmToken'];
