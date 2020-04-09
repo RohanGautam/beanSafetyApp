@@ -54,6 +54,7 @@ class _PeerNotifyState extends State<PeerNotify> {
       ),
       body: SingleChildScrollView(
         child: Container(
+          height: MediaQuery.of(context).size.height ,
           child: Center(
             child: Column(
               children: <Widget>[
@@ -64,7 +65,7 @@ class _PeerNotifyState extends State<PeerNotify> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       "Alert",
-                      style: TextStyle(fontSize: 50),
+                      style: TextStyle(fontSize: 40),
                     ),
                   ),
                   color: Colors.orangeAccent,
@@ -122,7 +123,7 @@ class _PeerNotifyState extends State<PeerNotify> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           "Respond",
-                          style: TextStyle(fontSize: 50),
+                          style: TextStyle(fontSize: 40),
                         ),
                       ),
                       color: Colors.amber,
@@ -225,13 +226,14 @@ class _PeerNotifyState extends State<PeerNotify> {
       children: <Widget>[
         Text(
           "\nAlert level",
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
         ),
         Slider(
           value: (currentAlertLevel ?? 0).toDouble(),
           min: 0,
           max: 5,
           divisions: 5,
+          label: (currentAlertLevel ?? 0).toString(),
           activeColor: Colors.deepOrange[900],
           inactiveColor: Colors.deepOrange[100],
           onChanged: (val) {
@@ -250,7 +252,7 @@ class _PeerNotifyState extends State<PeerNotify> {
       children: <Widget>[
         Text(
           "Issue:",
-          style: TextStyle(fontSize: 25),
+          style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
