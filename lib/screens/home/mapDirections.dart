@@ -59,8 +59,8 @@ class _MapDirectionsState extends State<MapDirections> {
                 ),
               ),
             ),
-            launchURLButton("Watch tutorial", _launchURL, Colors.deepOrange[300]),
-            launchURLButton("Call alerter", _launchTelephoneURL,Colors.deepPurple[500]),
+            launchURLButton("Watch tutorial", ()=>_launchURL('https://www.youtube.com/watch?v=TUxusK-X1JU'), Colors.deepOrange[300]),
+            launchURLButton("Call alerter", ()=>_launchURL('tel:12345678'),Colors.deepPurple[500]),
           ],
         ),
       ),
@@ -84,17 +84,7 @@ class _MapDirectionsState extends State<MapDirections> {
     );
   }
 
-  _launchURL() async {
-    const url = 'https://www.youtube.com/watch?v=TUxusK-X1JU';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  _launchTelephoneURL() async {
-    const url = 'tel:12345678';
+  _launchURL(url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
