@@ -22,6 +22,7 @@
 * Make sure returned value from firebase cloud function,eg, in `index.ts`, is JSON-serialisable.
 * Devices are identified with a `fcm` (got in `getDeviceToken` in `pushNotification.dart`). You can't use the the Firebase Auth uid as the fcm. Gotta store and use it seperately.
 * Sometimes users will have to be re-registered for fcm token to be valid. (Do this if the notifications are not working)
+* can use `if` within columns etc to show/hide widgets, like [so](https://stackoverflow.com/a/53044562). 
 
 # TODO: 
 * remove setstyle for map from emergency services map
@@ -56,3 +57,4 @@
 * [Pass scaffold context with key](https://stackoverflow.com/a/53889100)
 * [Keyboard causing bottom overflow fix: SingleChildScrollView](https://www.youtube.com/watch?time_continue=14&v=2E9iZgg5TOY&feature=emb_logo)
 * [Align images in markdown](https://davidwells.io/snippets/how-to-align-images-in-markdown)
+* [Show/hide widgets based on a bomb-ass if condition](https://stackoverflow.com/a/53044562)

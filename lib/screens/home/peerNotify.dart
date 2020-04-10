@@ -73,6 +73,7 @@ class _PeerNotifyState extends State<PeerNotify> {
                   color: Colors.orangeAccent,
                   shape: new RoundedRectangleBorder(
                     borderRadius: buttonBorderRadius,
+                    side: BorderSide(color: Colors.brown, width: 5)
                   ),
                   // disable button via setting onpressed to null if we dont have needed values
                   onPressed: (currentAlertType == null ||
@@ -121,6 +122,7 @@ class _PeerNotifyState extends State<PeerNotify> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
+                    if(currentUserData.alerted)
                     RaisedButton(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -129,9 +131,10 @@ class _PeerNotifyState extends State<PeerNotify> {
                           style: TextStyle(fontSize: 40),
                         ),
                       ),
-                      color: Colors.amber,
+                      color: Colors.red[100],
                       shape: new RoundedRectangleBorder(
                         borderRadius: buttonBorderRadius,
+                        side: BorderSide(color: Colors.brown, width: 5)
                       ),
                       onPressed: () async {
                         print("Respond- updating location: ");
@@ -148,15 +151,15 @@ class _PeerNotifyState extends State<PeerNotify> {
                         );
                       },
                     ),
+                    if(currentUserData.responder)
                     RaisedButton(
-                      child: Text("Go"),
-                      color: Colors.amber,
+                      child: Text("GO!"),
+                      color: Colors.red[100],
                       shape: new RoundedRectangleBorder(
                         borderRadius: buttonBorderRadius,
+                        side: BorderSide(color: Colors.brown, width: 5)
                       ),
-                      onPressed: currentUserData.responder == false
-                          ? null
-                          : () {
+                      onPressed: () {
                               var dLat, dLng;
                               userData.forEach((data) {
                                 if (data.alerter == true) {

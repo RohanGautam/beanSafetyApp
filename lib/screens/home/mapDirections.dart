@@ -76,9 +76,10 @@ class _MapDirectionsState extends State<MapDirections> {
           style: TextStyle(fontSize: 40, color: Colors.white),
         ),
       ),
-      color: color,
+      color:Colors.red[500],
       shape: new RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(50.0),
+        side: BorderSide(color: Colors.brown, width: 5)
       ),
       onPressed: onPressed,
     );
