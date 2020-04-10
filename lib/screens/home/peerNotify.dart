@@ -72,9 +72,8 @@ class _PeerNotifyState extends State<PeerNotify> {
                   ),
                   color: Colors.orangeAccent,
                   shape: new RoundedRectangleBorder(
-                    borderRadius: buttonBorderRadius,
-                    side: BorderSide(color: Colors.brown, width: 5)
-                  ),
+                      borderRadius: buttonBorderRadius,
+                      side: BorderSide(color: Colors.brown, width: 5)),
                   // disable button via setting onpressed to null if we dont have needed values
                   onPressed: (currentAlertType == null ||
                           currentAlertLevel == null)
@@ -117,68 +116,66 @@ class _PeerNotifyState extends State<PeerNotify> {
                               user.uid, currentAlertType, currentAlertLevel);
                         },
                 ),
-                Text(
-                    showNotificationStatus(userData, currentUserData, _scaffoldKey)),
+                Text(showNotificationStatus(
+                    userData, currentUserData)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    if(currentUserData.alerted)
-                    RaisedButton(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "Respond",
-                          style: TextStyle(fontSize: 40),
+                    if (currentUserData.alerted)
+                      RaisedButton(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Respond",
+                            style: TextStyle(fontSize: 40),
+                          ),
                         ),
+                        color: Colors.red[100],
+                        shape: new RoundedRectangleBorder(
+                            borderRadius: buttonBorderRadius,
+                            side: BorderSide(color: Colors.brown, width: 5)),
+                        onPressed: () async {
+                          print("Respond- updating location: ");
+                          var _locres = await getAndUpdateLocation(
+                              currentUserData, user, userDb);
+                          var r1 = await userDb.updateUserData(
+                            currentUserData.latitude,
+                            currentUserData.longitude,
+                            currentUserData.alerter,
+                            currentUserData.alerted,
+                            true,
+                            currentUserData.alertType,
+                            currentUserData.alertLevel,
+                          );
+                        },
                       ),
-                      color: Colors.red[100],
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: buttonBorderRadius,
-                        side: BorderSide(color: Colors.brown, width: 5)
-                      ),
-                      onPressed: () async {
-                        print("Respond- updating location: ");
-                        var _locres = await getAndUpdateLocation(
-                            currentUserData, user, userDb);
-                        var r1 = await userDb.updateUserData(
-                          currentUserData.latitude,
-                          currentUserData.longitude,
-                          currentUserData.alerter,
-                          currentUserData.alerted,
-                          true,
-                          currentUserData.alertType,
-                          currentUserData.alertLevel,
-                        );
-                      },
-                    ),
-                    if(currentUserData.responder)
-                    RaisedButton(
-                      child: Text("GO!"),
-                      color: Colors.red[100],
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: buttonBorderRadius,
-                        side: BorderSide(color: Colors.brown, width: 5)
-                      ),
-                      onPressed: () {
-                              var dLat, dLng;
-                              userData.forEach((data) {
-                                if (data.alerter == true) {
-                                  dLat = data.latitude;
-                                  dLng = data.longitude;
-                                }
-                              });
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MapDirections(
-                                            sLat: currentLat,
-                                            sLng: currentLng,
-                                            dLat: dLat +
-                                                0.1, //TODO : remove this, is for testing
-                                            dLng: dLng + 0.1,
-                                          )));
-                            },
-                    )
+                    if (currentUserData.responder)
+                      RaisedButton(
+                        child: Text("GO!"),
+                        color: Colors.red[100],
+                        shape: new RoundedRectangleBorder(
+                            borderRadius: buttonBorderRadius,
+                            side: BorderSide(color: Colors.brown, width: 5)),
+                        onPressed: () {
+                          var dLat, dLng;
+                          userData.forEach((data) {
+                            if (data.alerter == true) {
+                              dLat = data.latitude;
+                              dLng = data.longitude;
+                            }
+                          });
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MapDirections(
+                                        sLat: currentLat,
+                                        sLng: currentLng,
+                                        dLat: dLat +
+                                            0.1, //TODO : remove this, is for testing
+                                        dLng: dLng + 0.1,
+                                      )));
+                        },
+                      )
                   ],
                 )
               ],
@@ -362,9 +359,9 @@ class _PeerNotifyState extends State<PeerNotify> {
   }
 
   String showNotificationStatus(
-      List<UserData> userData, UserData currentUserData, var scaffoldKey) {
+      List<UserData> userData, UserData currentUserData) {
     var alertStatus = "Idle";
-    if (currentUserData.alerted && currentUserData.responder==false) {
+    if (currentUserData.alerted && currentUserData.responder == false) {
       userData.forEach((data) {
         if (data.alerter == true) {
           alertStatus =
@@ -377,17 +374,10 @@ class _PeerNotifyState extends State<PeerNotify> {
     }
     userData.forEach((data) {
       if (data.responder == true && (data.uid != currentUserData.uid)) {
-        alertStatus = "\nResponder ${data.uid} on the way";
+        alertStatus = "Responder ${data.uid} on the way";
       }
     });
     return alertStatus;
-  }
-
-  Widget customSnackBar(String text, var onPressed) {
-    return SnackBar(
-      content: Text(text),
-      action: SnackBarAction(label: "Dismiss", onPressed: onPressed),
-    );
   }
 
   sendAlertNotification(
