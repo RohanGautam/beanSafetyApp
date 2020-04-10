@@ -1,5 +1,5 @@
 
-import 'package:firebase_tutorial/services/EmergencyServiceMap.dart';
+import 'package:firebase_tutorial/services/emergencyServiceMap.dart';
 import 'package:firebase_tutorial/shared/RoundIconButton.dart';
 import 'package:firebase_tutorial/shared/baseAppBar.dart';
 import 'package:flutter/material.dart';
