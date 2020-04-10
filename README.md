@@ -10,8 +10,7 @@
 
 # Showing local notifications
 * import : `import 'package:firebase_tutorial/services/localNotifications.dart';`
-* use : `showNotification(0, "Title", "Body");`
-
+* use : `showNotification(id, "Title", "Body");` (`id` is an integer)
 
 # Learnings
 * keep models(classes) seperate from the UI files. Also bunch related UI files together.
