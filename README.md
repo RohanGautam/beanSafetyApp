@@ -30,8 +30,7 @@
 * can use `if` within columns etc to show/hide widgets, like [so](https://stackoverflow.com/a/53044562). 
 
 # TODO: 
-* remove setstyle for map from emergency services map
-* fix emergencyservicemap
+* do something with the toggle dengue button in `alertMe.dart`
 * remove api key from `android/app/src/main/AndroidManifest.xml` and everywhere else after project is over.
 
 # Login process
