@@ -36,17 +36,17 @@ class EmergencyContacts extends StatelessWidget {
               children: <Widget>[
                 RoundIconButtonII(
                   text: "FIRE STATION",
-                  onPressed: () => _launchCaller('tel:123'),
+                  onPressed: () => _launchCaller('tel:995'),
                   icon: IconData(60220, fontFamily: 'MaterialIcons'),
                 ),
                 RoundIconButtonII(
                   text: "POLICE STATION",
-                  onPressed: () => _launchCaller('tel:456'),
+                  onPressed: () => _launchCaller('tel:999'),
                   icon: IconData(59516, fontFamily: 'MaterialIcons'),
                 ),
                 RoundIconButtonII(
                   text: "HOSPITAL",
-                  onPressed: () => _launchCaller('tel:789'),
+                  onPressed: () => _launchCaller('tel:995'),
                   icon: IconData(58696, fontFamily: 'MaterialIcons'),
                 ),
               ],
