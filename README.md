@@ -61,3 +61,4 @@
 * [Keyboard causing bottom overflow fix: SingleChildScrollView](https://www.youtube.com/watch?time_continue=14&v=2E9iZgg5TOY&feature=emb_logo)
 * [Align images in markdown](https://davidwells.io/snippets/how-to-align-images-in-markdown)
 * [Show/hide widgets based on a bomb-ass if condition](https://stackoverflow.com/a/53044562)
+* [App-wide local notifications](https://www.youtube.com/watch?v=JBOkTsIN22M)
