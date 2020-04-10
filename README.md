@@ -1,7 +1,7 @@
 # B.E.A.N.S
-
-![logo](assets/beansAppLogo.png)
-
+<p align="center">
+    <img src="assets/beansAppLogo.png" alt="logo" width="200"/>
+</p>
 
 # Firebase:
 * Set up a new firebase project, and link it with an android app (work with the `/android` folder in flutter). Follow along the steps.
@@ -24,15 +24,11 @@
 * Sometimes users will have to be re-registered for fcm token to be valid. (Do this if the notifications are not working)
 
 # TODO: 
-* remove api key from `android/app/src/main/AndroidManifest.xml` and everywhere else after project is over.
-* check out SizedBox removal in Roundbutton I & II
 * remove setstyle for map from emergency services map
 * fix emergencyservicemap
-* fix cluster showing
-* send weather notifications
 * use snackbar/dialog for alerting
-* add appbar in google map clusters
 
+* remove api key from `android/app/src/main/AndroidManifest.xml` and everywhere else after project is over.
 
 # Login process
 ![img](doc_images/loginprocess.png)
@@ -59,3 +55,4 @@
 * [Change app icon](https://pub.dev/packages/flutter_launcher_icons)
 * [Pass scaffold context with key](https://stackoverflow.com/a/53889100)
 * [Keyboard causing bottom overflow fix: SingleChildScrollView](https://www.youtube.com/watch?time_continue=14&v=2E9iZgg5TOY&feature=emb_logo)
+* [Align images in markdown](https://davidwells.io/snippets/how-to-align-images-in-markdown)
