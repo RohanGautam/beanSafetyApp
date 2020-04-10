@@ -116,8 +116,7 @@ class _PeerNotifyState extends State<PeerNotify> {
                               user.uid, currentAlertType, currentAlertLevel);
                         },
                 ),
-                Text(showNotificationStatus(
-                    userData, currentUserData)),
+                showNotificationStatus(userData, currentUserData),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -358,14 +357,18 @@ class _PeerNotifyState extends State<PeerNotify> {
     );
   }
 
-  String showNotificationStatus(
+  Widget showNotificationStatus(
       List<UserData> userData, UserData currentUserData) {
-    var alertStatus = "Idle";
+    var alertStatus = "";
+    bool alerted = false;
+    bool showResponder = false;
     if (currentUserData.alerted && currentUserData.responder == false) {
       userData.forEach((data) {
         if (data.alerter == true) {
-          alertStatus =
-              "Alerted!!!! type ${data.alertType}, level ${data.alertLevel} location ${data.latitude}, ${data.longitude}";
+          alertStatus = "Type: ${data.alertType}, urgency level:  ${data.alertLevel}";
+          alerted = true;
+          // alertStatus =
+          //     "Alerted!!!! type ${data.alertType}, level ${data.alertLevel} location ${data.latitude}, ${data.longitude}";
           // scaffoldKey.currentState.showSnackBar(customSnackBar(alertStatus, () {
           //   scaffoldKey.currentState.hideCurrentSnackBar();
           // }));
@@ -374,10 +377,35 @@ class _PeerNotifyState extends State<PeerNotify> {
     }
     userData.forEach((data) {
       if (data.responder == true && (data.uid != currentUserData.uid)) {
-        alertStatus = "Responder ${data.uid} on the way";
+        alertStatus = "Responder ${data.uid.substring(0,5)} on the way.";
+        showResponder = true;
       }
     });
-    return alertStatus;
+    if (alertStatus!=""){
+      if (alerted && (currentUserData.responder) || !showResponder) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            Text("You have been alerted!", style: TextStyle(fontSize: 18, color: Colors.red, fontWeight:FontWeight.bold),),
+            Text(alertStatus, style: TextStyle(fontSize: 20),),
+          ],
+        ),
+      );
+      } else if (showResponder) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            Text("Someone's on their way to help.", style: TextStyle(fontSize: 18, color: Colors.green[900], fontWeight:FontWeight.bold),),
+            Text(alertStatus, style: TextStyle(fontSize: 20),),
+          ],
+        ),
+      );
+      }
+    } else {
+      return Container();
+    }
   }
 
   sendAlertNotification(
