@@ -105,7 +105,6 @@ class ClustersState extends State<Clusters> {
   }
 
   parsingwjson() async {
-    int m = 0;
     List dummy_data = [];
     bool isInPolygon;
     List<bool> IsInPolygonList = [];
@@ -125,33 +124,33 @@ class ClustersState extends State<Clusters> {
             jsonResult["features"][j]["geometry"]["coordinates"][0][i][1],
             jsonResult["features"][j]["geometry"]["coordinates"][0][i][0]));
       }
-      poly_points.add(Polygon(
+      setState(() {
+        poly_points.add(Polygon(
           polygonId: PolygonId("cluster $j"),
           fillColor: Colors.red[100],
           points: polygonlinecoord,
           strokeColor: Colors.red[300],
           strokeWidth: 5));
-
-      //the below part needs to be optimized. The part below is for checking if current location lies in the polygon
-
-      /*isInPolygon = await GoogleMapPolyUtil.containsLocation(point: LatLng(position.latitude,position.longitude), polygon: polygonlinecoord);
-     if (isInPolygon==true){
-       print("for this cluster you lie in the dengue area");
-     }
-     */
+      });      
     }
-    //to check if containslocation works run below commented line: output will be true, because i have fed in a point that lies within the cluster
-    //isInPolygon = await GoogleMapPolyUtil.containsLocation(point: LatLng(1.314530, 103.878397), polygon: polygonlinecoord);
-    /*
-
-    print("result of point in polygon is: ");
-    while (m<IsInPolygonList.length){
-      if (IsInPolygonList[m]==true){
-        print("you are in dengue cluster");
-        break;
+    print("Now checking if point lies within any cluster: ");
+    for (int j = 0; j < jsonResult["features"].length; j++) {
+      List<LatLng> polygonlinecoord = [];
+      isInPolygon = false;
+      for (int i = 0;
+          i < (jsonResult["features"][j]["geometry"]["coordinates"][0]).length;
+          i++) {
+        polygonlinecoord.add(LatLng(
+            jsonResult["features"][j]["geometry"]["coordinates"][0][i][1],
+            jsonResult["features"][j]["geometry"]["coordinates"][0][i][0]));
       }
-      m++;
+      //to check if containslocation works run below commented line: output will be true, because i have fed in a point that lies within the cluster
+      //isInPolygon = await GoogleMapPolyUtil.containsLocation(point: LatLng(1.314530, 103.878397), polygon: polygonlinecoord);
+      isInPolygon = await GoogleMapPolyUtil.containsLocation(point: LatLng(position.latitude,position.longitude), polygon: polygonlinecoord);
+      if (isInPolygon == true) {
+        print("For cluster $j you lie in the dengue area");
+      }
     }
-    */
+    print("End of checking process");
   }
 }

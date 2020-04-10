@@ -31,6 +31,7 @@
 * fix cluster showing
 * send weather notifications
 * use snackbar/dialog for alerting
+* add appbar in google map clusters
 
 
 # Login process
