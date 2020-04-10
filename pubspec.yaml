@@ -88,8 +88,10 @@ flutter:
     - assets/defribillator.png
     - assets/maps-and-location.png
     - assets/siren.png
-    - assets/siren.png
     - assets/dengue-clusters-geojson.geojson
+    - assets/rain.png
+    - assets/sunny.png
+    - assets/moon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

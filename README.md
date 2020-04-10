@@ -8,6 +8,10 @@
 * In the firebase console under "Authentication", set up email and anonymous login methods.
 * Don't forget to add your `google-services.json` in the `android/app/` folder!
 
+# Showing local notifications
+* import : `import 'package:firebase_tutorial/services/localNotifications.dart';`
+* use : `showNotification(0, "Title", "Body");`
+
 
 # Learnings
 * keep models(classes) seperate from the UI files. Also bunch related UI files together.

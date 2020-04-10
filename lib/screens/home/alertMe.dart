@@ -1,4 +1,6 @@
 import 'package:firebase_tutorial/services/Clusters.dart';
+import 'package:firebase_tutorial/services/WeatherDBMS.dart';
+import 'package:firebase_tutorial/services/localNotifications.dart';
 import 'package:firebase_tutorial/shared/RoundIconButton.dart';
 import 'package:firebase_tutorial/shared/baseAppBar.dart';
 import 'package:firebase_tutorial/services/Weather.dart';
@@ -16,7 +18,7 @@ class _AlertMeUIState extends State<AlertMeUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BaseAppBar(title : 'Alert Me'),
+      appBar: BaseAppBar(title: 'Alert Me'),
       body: PreferencePage([
         SizedBox(height: 50),
         SizedBox(
@@ -32,8 +34,10 @@ class _AlertMeUIState extends State<AlertMeUI> {
         ),
         SizedBox(height: 10),
         PreferenceTitle('Manage Alerts',
-            style:
-            TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.red[700])),
+            style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.red[700])),
         SwitchPreference(
           'Dengue',
           'dengue_alert',
@@ -71,25 +75,36 @@ class _AlertMeUIState extends State<AlertMeUI> {
         ),
         PreferenceTitle(
           'View Maps',
-          style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.red[700]),
+          style: TextStyle(
+              fontSize: 15.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.red[700]),
         ),
         Padding(
           padding: const EdgeInsets.all(30.0),
           child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RoundIconButton(
-                  icon: IconData(58715, fontFamily: 'MaterialIcons'),
-                  mpr: MaterialPageRoute(builder: (context) => Clusters()),
-                  text: 'DENGUE',
-                ),
-                SizedBox(width: 60),
-                RoundIconButton(
-                  icon: IconData(58045, fontFamily: 'MaterialIcons'),
-                  mpr: MaterialPageRoute(builder: (context) => Clusters()),
-                  text: 'WEATHER',
-                )
-              ]),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              RoundIconButton(
+                icon: IconData(58715, fontFamily: 'MaterialIcons'),
+                mpr: MaterialPageRoute(builder: (context) => Clusters()),
+                text: 'DENGUE',
+              ),
+              SizedBox(width: 60),
+              RoundIconButton(
+                icon: IconData(58045, fontFamily: 'MaterialIcons'),
+                mpr: MaterialPageRoute(builder: (context) => Weather()),
+                text: 'WEATHER',
+              ),
+
+              /// just to test the working of notification
+              // RaisedButton(
+              //   child: Text("notif"),
+              //   onPressed: (){
+              //     showNotification(0, "Random", "Notificationn");
+              // })
+            ],
+          ),
         ),
       ]),
     );

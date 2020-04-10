@@ -2,8 +2,10 @@ import 'package:firebase_tutorial/models/userData.dart';
 import 'package:firebase_tutorial/screens/home/emergencyContacts.dart';
 import 'package:firebase_tutorial/screens/home/emergencyServices.dart';
 import 'package:firebase_tutorial/screens/home/peerNotify.dart';
+import 'package:firebase_tutorial/services/WeatherDBMS.dart';
 import 'package:firebase_tutorial/services/auth.dart';
 import 'package:firebase_tutorial/services/database.dart';
+import 'package:firebase_tutorial/services/localNotifications.dart';
 import 'package:firebase_tutorial/shared/RoundIconButton.dart';
 import 'package:firebase_tutorial/shared/customButton.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +13,23 @@ import 'package:provider/provider.dart';
 
 import 'alertMe.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  HomeState createState() => HomeState();
+}
+
+class HomeState extends State<Home> {
   final AuthService _auth = AuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    if (weatherEnabled == true) {
+      initPlatformState();
+      register();
+    }
+    initialise();
+  }
 
   @override
   Widget build(BuildContext context) {
