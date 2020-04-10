@@ -6,6 +6,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_map_polyutil/google_map_polyutil.dart';
 
+import 'localNotifications.dart';
+
 String googleAPIKey = "AIzaSyB9jpG4Ys8xGHf9iyDkbOH3Fz8kB0zaLiI";
 // for my custom icons
 BitmapDescriptor sourceIcon;
@@ -149,6 +151,7 @@ class ClustersState extends State<Clusters> {
           point: LatLng(position.latitude, position.longitude),
           polygon: polygonlinecoord);
       if (isInPolygon == true) {
+        showNotification(1, "Alert", "You are now in the dengue area");
         print("For cluster $j you lie in the dengue area");
       }
     }

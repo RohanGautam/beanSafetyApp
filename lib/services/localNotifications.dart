@@ -1,15 +1,15 @@
+import 'package:firebase_tutorial/screens/home/alertMe.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_tutorial/screens/home/home.dart';
-import 'WeatherDBMS.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
 var initialisationSettingsAndroid;
 var initialisationSettingsIOS;
 var initialisationSettings;
 
-//Call this function to show notifications. Title should be "BEANS" and body is the information you would want to tell
+//Call this function to show notifications. Title and body is the information you would want to tell
 void showNotification(int id, String title, String body) async {
   await _demoNotification(id, title, body);
 }
@@ -48,7 +48,7 @@ Future onSelectNotification(String payload) async {
     debugPrint("Notification payload: $payload");
   }
   await Navigator.push(
-      HomeState().context, new MaterialPageRoute(builder: (context) => new Weather()));
+      HomeState().context, new MaterialPageRoute(builder: (context) => AlertMeUI()));
 }
 
 //For IOS
@@ -65,7 +65,7 @@ Future onDidReceiveLocalNotification(
           child: Text("Ok"),
           onPressed: () async {
             Navigator.of(context, rootNavigator: true).pop(await Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Weather())));
+                context, MaterialPageRoute(builder: (context) => AlertMeUI())));
           },
         ),
       ],

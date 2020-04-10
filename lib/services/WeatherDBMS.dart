@@ -10,10 +10,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/cupertino.dart';
-import 'dart:ui' as ui;
-import 'dart:typed_data';
+
 import 'localNotifications.dart';
 /*
 Future<Uint8List> getBytesFromAsset(String path, int width) async {
@@ -126,7 +124,7 @@ Future<void> initPlatformState() async {
       time = await getWeather();
       if(time != null){
         //Send this push notification when its done
-        showNotification(0, "Weather", "Gonna rain in about 2 hours at UTC $time");
+        showNotification(0, "Alert", "It is going to rain in about 2 hours at your current location");
         print("Gonna rain at $time");
         sleep(const Duration(hours: 2)); //EDIT THIS
       }
@@ -252,8 +250,7 @@ class WeatherState extends State<Weather> {
         ));
       }
       for (var i = 0; i < forecasts.length; i++) {
-        //rain.contains(forecasts[i]["forecast"])
-        if (false) {
+        if (rain.contains(forecasts[i]["forecast"])) {
           print("Raining");
           _markers.add(Marker(
             markerId: MarkerId(location[i]["name"]),
@@ -265,8 +262,7 @@ class WeatherState extends State<Weather> {
             ),
           ));
         }
-        //forecasts[i]["forecast"].contains("Night")
-        else if(false) {
+        else if(forecasts[i]["forecast"].contains("Night")) {
           _markers.add(Marker(
             markerId: MarkerId(location[i]["name"]),
             position: LatLng(location[i]["label_location"]["latitude"],
