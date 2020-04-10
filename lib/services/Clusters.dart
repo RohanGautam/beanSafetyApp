@@ -1,5 +1,4 @@
 import 'dart:convert';
-//import 'package:poly/poly.dart';
 import 'package:firebase_tutorial/shared/baseAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -23,11 +22,10 @@ class ClustersState extends State<Clusters> {
   GoogleMapController _controller;
   Set<Polyline> _polylines = {};
   List<LatLng> polylineCoordinates = [];
-  //List<LatLng> polygonlinecoord = [];
   Set<Marker> _markers = {};
   Set<Polygon> poly_points = {};
   PolylinePoints polylinePoints = PolylinePoints();
-  Position position = Position(latitude: 1.353195 , longitude: 103.681082);
+  Position position = Position(latitude: 1.353195, longitude: 103.681082);
   @override
   void initState() {
     super.initState();
@@ -40,24 +38,26 @@ class ClustersState extends State<Clusters> {
 
   @override
   Widget build(BuildContext context) {
-    return GoogleMap(
-        myLocationEnabled: true,
-        compassEnabled: true,
-        tiltGesturesEnabled: false,
-        markers: _markers,
-        polylines: _polylines,
-        polygons: poly_points,
-        mapType: MapType.normal,
-        initialCameraPosition: CameraPosition(
-          target: LatLng(position.latitude, position.longitude),
-          zoom: 12.0,
-        ),
-        onMapCreated: onMapCreated);
+    return Scaffold(
+      appBar: BaseAppBar(title: "DENGUE CLUSTERS",),
+      body: GoogleMap(
+          myLocationEnabled: true,
+          compassEnabled: true,
+          tiltGesturesEnabled: false,
+          markers: _markers,
+          polylines: _polylines,
+          polygons: poly_points,
+          mapType: MapType.normal,
+          initialCameraPosition: CameraPosition(
+            target: LatLng(position.latitude, position.longitude),
+            zoom: 12.0,
+          ),
+          onMapCreated: onMapCreated),
+    );
   }
 
   void onMapCreated(GoogleMapController controller) {
     _controller = controller;
-    //_controller.complete(controller);
     setPolylines();
     setMapPins();
   }
@@ -107,7 +107,6 @@ class ClustersState extends State<Clusters> {
   parsingwjson() async {
     List dummy_data = [];
     bool isInPolygon;
-    List<bool> IsInPolygonList = [];
     String data = await DefaultAssetBundle.of(context)
         .loadString("assets/dengue-clusters-geojson.geojson");
     final jsonResult = json.decode(data);
@@ -126,12 +125,12 @@ class ClustersState extends State<Clusters> {
       }
       setState(() {
         poly_points.add(Polygon(
-          polygonId: PolygonId("cluster $j"),
-          fillColor: Colors.red[100],
-          points: polygonlinecoord,
-          strokeColor: Colors.red[300],
-          strokeWidth: 5));
-      });      
+            polygonId: PolygonId("cluster $j"),
+            fillColor: Colors.red[100],
+            points: polygonlinecoord,
+            strokeColor: Colors.red[300],
+            strokeWidth: 5));
+      });
     }
     print("Now checking if point lies within any cluster: ");
     for (int j = 0; j < jsonResult["features"].length; j++) {
@@ -146,7 +145,9 @@ class ClustersState extends State<Clusters> {
       }
       //to check if containslocation works run below commented line: output will be true, because i have fed in a point that lies within the cluster
       //isInPolygon = await GoogleMapPolyUtil.containsLocation(point: LatLng(1.314530, 103.878397), polygon: polygonlinecoord);
-      isInPolygon = await GoogleMapPolyUtil.containsLocation(point: LatLng(position.latitude,position.longitude), polygon: polygonlinecoord);
+      isInPolygon = await GoogleMapPolyUtil.containsLocation(
+          point: LatLng(position.latitude, position.longitude),
+          polygon: polygonlinecoord);
       if (isInPolygon == true) {
         print("For cluster $j you lie in the dengue area");
       }
