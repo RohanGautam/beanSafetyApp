@@ -1,3 +1,4 @@
+import 'package:firebase_tutorial/shared/baseAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -36,9 +37,7 @@ class _MapDirectionsState extends State<MapDirections> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Maps Sample App'),
-      ),
+      appBar: BaseAppBar(title: 'GO TO ALERTER',),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -117,11 +116,14 @@ class _MapDirectionsState extends State<MapDirections> {
       _markers.add(Marker(
         markerId: MarkerId('Source'),
         position: SOURCE_LOCATION,
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        infoWindow: InfoWindow(title: 'Current Location'),
       ));
       // destination pin
       _markers.add(Marker(
         markerId: MarkerId('Destination'),
         position: DEST_LOCATION,
+        infoWindow: InfoWindow(title: 'Alerter Location'),
       ));
     });
   }
