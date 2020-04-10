@@ -27,8 +27,6 @@
 # TODO: 
 * remove setstyle for map from emergency services map
 * fix emergencyservicemap
-* use snackbar/dialog for alerting
-
 * remove api key from `android/app/src/main/AndroidManifest.xml` and everywhere else after project is over.
 
 # Login process
