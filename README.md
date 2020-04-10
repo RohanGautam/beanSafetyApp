@@ -58,3 +58,4 @@
 * Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
 * [Change app icon](https://pub.dev/packages/flutter_launcher_icons)
 * [Pass scaffold context with key](https://stackoverflow.com/a/53889100)
+* [Keyboard causing bottom overflow fix: SingleChildScrollView](https://www.youtube.com/watch?time_continue=14&v=2E9iZgg5TOY&feature=emb_logo)
