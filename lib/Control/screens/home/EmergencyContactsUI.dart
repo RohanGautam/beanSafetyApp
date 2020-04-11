@@ -2,8 +2,8 @@ import 'package:firebase_tutorial/Widget/shared/RoundIconButtonII.dart';
 import 'package:firebase_tutorial/Widget/shared/BaseAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:firebase_tutorial/AuthorityDB.dart';
-import 'package:firebase_tutorial/Authority.dart';
+import 'package:firebase_tutorial/Entity/AuthorityDB.dart';
+import 'package:firebase_tutorial/Entity/Authority.dart';
 
 ///This class is to contact the emergency services: Fire station, Police station and Ambulance
 ///When the button to call the service is clicked it takes you to the phone's dialpad with the
@@ -16,6 +16,7 @@ class EmergencyContacts extends StatefulWidget {
 class _EmergencyContactsState extends State<EmergencyContacts> {
   AuthorityDB adb;
 
+  ///This method is to allow for easy modification of the list of authorities
   void addAuthority() {
     adb.setAuthorityList(Authority(name: 'FIRE STATION', contactNumber: '995'));
     adb.setAuthorityList(
