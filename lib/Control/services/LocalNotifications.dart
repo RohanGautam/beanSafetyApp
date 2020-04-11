@@ -1,8 +1,8 @@
-import 'package:firebase_tutorial/screens/home/alertMe.dart';
+import 'package:firebase_tutorial/Control/screens/home/alertMe.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:firebase_tutorial/screens/home/home.dart';
+import 'package:firebase_tutorial/Control/screens/home/home.dart';
 
 /// This is the control class for push notifications sent locally
 /// [localNotifications] can be used when the event to trigger the notification is in the current user's app

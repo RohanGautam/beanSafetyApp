@@ -1,5 +1,5 @@
-import 'package:firebase_tutorial/models/user.dart';
-import 'package:firebase_tutorial/screens/authenticate/authenticate.dart';
+import 'package:firebase_tutorial/Entity/models/user.dart';
+import 'package:firebase_tutorial/Control/authenticate.dart';
 import 'package:firebase_tutorial/screens/home/home.dart';
 import 'package:firebase_tutorial/services/pushNotification.dart';
 import 'package:flutter/material.dart';

@@ -1,12 +1,12 @@
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_tutorial/models/user.dart';
-import 'package:firebase_tutorial/models/userData.dart';
+import 'package:firebase_tutorial/Entity/models/user.dart';
+import 'package:firebase_tutorial/Entity/models/userData.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_tutorial/services/currentLocation.dart';
+import 'package:firebase_tutorial/Entity/currentLocation.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_tutorial/services/database.dart';
+import 'package:firebase_tutorial/Entity/database.dart';
 
-import 'mapDirections.dart';
+import 'MapDirections.dart';
 
 /// The UI and intermediate logic for the peer notification system.
 /// Makes the changes to the database using `DatabaseService`.

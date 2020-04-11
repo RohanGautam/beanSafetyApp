@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_tutorial/models/user.dart';
-import 'package:firebase_tutorial/services/database.dart';
-import 'package:firebase_tutorial/services/pushNotification.dart';
+import 'package:firebase_tutorial/Entity/models/user.dart';
+import 'package:firebase_tutorial/Entity/database.dart';
+import 'package:firebase_tutorial/Control/services/pushNotification.dart';
 
 
 /// This is the class that handles all the authentication communications with Firebase.

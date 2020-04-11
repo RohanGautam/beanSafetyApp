@@ -1,5 +1,5 @@
-import 'package:firebase_tutorial/screens/authenticate/register.dart';
-import 'package:firebase_tutorial/screens/authenticate/sign_in.dart';
+import 'package:firebase_tutorial/Boundary/SignUpUI.dart';
+import 'package:firebase_tutorial/Boundary/LoginUI.dart';
 import 'package:flutter/material.dart';
 
 /// This is a parent class for `SignIn` and `Register` authentication classes.

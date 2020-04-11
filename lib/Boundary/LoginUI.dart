@@ -1,4 +1,4 @@
-import 'package:firebase_tutorial/services/auth.dart';
+import 'package:firebase_tutorial/Control/services/auth.dart';
 import 'package:firebase_tutorial/shared/loading.dart';
 import 'package:firebase_tutorial/shared/authTextfeildDecoration.dart';
 
@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 /// the `SignIn` page, for example the text feilds to enter the username and passoword.
 /// It also performs basic form validation, for example checking if the email is valid, the password
 /// is of specified length, etc. 
-/// Once the form is submitted, it uses the authentication service (in `services/auth.dart`) 
+/// Once the form is submitted, it uses the authentication service (in `services/AuthorisationService.dart`)
 /// to communicate with firebase and sign in the user.
 class SignIn extends StatefulWidget {
   final Function toggleSignIn;

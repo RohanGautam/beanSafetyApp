@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-/// Custom button Used for showing menu selection options in `emergencyContacts.dart`
-class RoundIconButtonII extends StatelessWidget {
+/// Custom button Used for showing menu selection options in `EmergencyServicesUI.dart` and `AlertMeUI.dart`
+class RoundIconButton extends StatelessWidget {
   String text;
   IconData icon;
   Function onPressed;
+  MaterialPageRoute mpr;
 
-  RoundIconButtonII(
-      {@required this.text, @required this.icon, @required this.onPressed});
+  RoundIconButton(
+      {@required this.text, @required this.icon, @required this.mpr});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +16,9 @@ class RoundIconButtonII extends StatelessWidget {
       children: <Widget>[
         RawMaterialButton(
           child: Icon(icon, color: Colors.white, size: 40.0,),
-          onPressed:
-            onPressed,
+          onPressed: (){
+            Navigator.push(context, mpr);
+          },
           elevation: 0.0,
           shape: CircleBorder(),
           fillColor: Colors.red[400],
@@ -24,11 +26,11 @@ class RoundIconButtonII extends StatelessWidget {
         ),
         // SizedBox(height: 10.0,),
         Text(text,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.red[700],
-              fontSize: 15.0,
-            ))
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.red[700],
+          fontSize: 15.0,
+        ))
       ],
     );
   }

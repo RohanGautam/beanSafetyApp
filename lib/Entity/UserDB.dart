@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_tutorial/models/userData.dart';
+import 'package:firebase_tutorial/Entity/models/userData.dart';
 
 
 
@@ -17,7 +17,7 @@ class DatabaseService {
       Firestore.instance.collection('userData');
 
   /// Perform a "regular" update.Because we dont want to update the fcm token on regular updates.
-  /// Used in `peerNotify.dart` to update alert/alerted/responder status of various users.
+  /// Used in `AlertOthersUI.dart` to update alert/alerted/responder status of various users.
   Future updateUserData(double latitude, double longitude, bool alerter ,bool alerted, bool responder, String alertType, int alertLevel) async {
     return await userCollection.document(uid).updateData({
       'latitude': latitude,
@@ -62,7 +62,7 @@ class DatabaseService {
   }
 
   /// user data change stream.
-  /// This is the stream that widgets (like `home.dart`) listen to, to be notified of user data changes.
+  /// This is the stream that widgets (like `HomePageUI.dart`) listen to, to be notified of user data changes.
   /// 
   /// Returns a firebase user data snapshot, mapped to custom `UserData` object when change data triggered by any source.
   Stream<List<UserData>> get userDataStream {

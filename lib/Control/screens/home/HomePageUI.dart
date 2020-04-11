@@ -1,17 +1,17 @@
-import 'package:firebase_tutorial/models/userData.dart';
-import 'package:firebase_tutorial/screens/home/emergencyContacts.dart';
-import 'package:firebase_tutorial/screens/home/emergencyServices.dart';
-import 'package:firebase_tutorial/screens/home/peerNotify.dart';
-import 'package:firebase_tutorial/services/WeatherDBMS.dart';
-import 'package:firebase_tutorial/services/auth.dart';
-import 'package:firebase_tutorial/services/database.dart';
-import 'package:firebase_tutorial/services/localNotifications.dart';
+import 'package:firebase_tutorial/Entity/models/userData.dart';
+import 'package:firebase_tutorial/Control/screens/home/EmergencyContactsUI.dart';
+import 'package:firebase_tutorial/Control/screens/home/emergencyServices.dart';
+import 'package:firebase_tutorial/Control/screens/home/peerNotify.dart';
+import 'package:firebase_tutorial/Control/services/WeatherDBMS.dart';
+import 'package:firebase_tutorial/Control/services/auth.dart';
+import 'package:firebase_tutorial/Entity/database.dart';
+import 'package:firebase_tutorial/Control/services/localNotifications.dart';
 import 'package:firebase_tutorial/shared/RoundIconButton.dart';
 import 'package:firebase_tutorial/shared/customButton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'alertMe.dart';
+import 'AlertMeUI.dart';
 
 
 
