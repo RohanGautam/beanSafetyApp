@@ -3,7 +3,6 @@ import 'package:firebase_tutorial/services/WeatherDBMS.dart';
 import 'package:firebase_tutorial/services/localNotifications.dart';
 import 'package:firebase_tutorial/shared/RoundIconButton.dart';
 import 'package:firebase_tutorial/shared/baseAppBar.dart';
-import 'package:firebase_tutorial/services/Weather.dart';
 import 'package:firebase_tutorial/services/WeatherDBMS.dart' as wdbms;
 import 'package:flutter/material.dart';
 import 'package:preferences/preferences.dart';
@@ -19,7 +18,6 @@ class AlertMeUI extends StatefulWidget {
 }
 
 class _AlertMeUIState extends State<AlertMeUI> {
-  WeatherDBMS weatherStuff;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
