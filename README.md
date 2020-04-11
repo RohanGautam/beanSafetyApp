@@ -4,7 +4,7 @@
 </p>
 
 # Firebase:
-* Set  up a new firebase project, and link it with an android app (work with the `/android` folder in flutter). Follow along the steps.
+* Set up a new firebase project, and link it with an android app (work with the `/android` folder in flutter). Follow along the steps.
 * In the firebase console under "Authentication", set up email and anonymous login methods.
 * Don't forget to add your `google-services.json` in the `android/app/` folder!
 
