@@ -1,12 +1,28 @@
-import 'package:firebase_tutorial/shared/RoundIconButtonII.dart';
-import 'package:firebase_tutorial/shared/baseAppBar.dart';
+import 'package:firebase_tutorial/Widget/shared/RoundIconButtonII.dart';
+import 'package:firebase_tutorial/Widget/shared/BaseAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_tutorial/AuthorityDB.dart';
+import 'package:firebase_tutorial/Authority.dart';
 
 ///This class is to contact the emergency services: Fire station, Police station and Ambulance
-///When the button to call the service is clicked it takes you to the phone's dialpad with the 
-///authority's number pre-filled into the dialpad using `_launchCaller` function 
-class EmergencyContacts extends StatelessWidget {
+///When the button to call the service is clicked it takes you to the phone's dialpad with the
+///authority's number pre-filled into the dialpad using `_launchCaller` function
+class EmergencyContacts extends StatefulWidget {
+  @override
+  _EmergencyContactsState createState() => _EmergencyContactsState();
+}
+
+class _EmergencyContactsState extends State<EmergencyContacts> {
+  AuthorityDB adb;
+
+  void addAuthority() {
+    adb.setAuthorityList(Authority(name: 'FIRE STATION', contactNumber: '995'));
+    adb.setAuthorityList(
+        Authority(name: 'POLICE STATION', contactNumber: '999'));
+    adb.setAuthorityList(Authority(name: 'HOSPITAL', contactNumber: '995'));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +32,7 @@ class EmergencyContacts extends StatelessWidget {
           Positioned(
               width: MediaQuery.of(context).size.width,
               top: MediaQuery.of(context).size.width *
-                  0.05, //TRY TO CHANGE THIS **0.30** value to achieve your goal
+                  0.05, //TRY TO CHANGE THIS *0.30* value to achieve your goal
               child: Container(
                 margin: EdgeInsets.all(16.0),
                 child: Column(
@@ -38,18 +54,21 @@ class EmergencyContacts extends StatelessWidget {
               childAspectRatio: 3,
               children: <Widget>[
                 RoundIconButtonII(
-                  text: "FIRE STATION",
-                  onPressed: () => _launchCaller('tel:995'),
+                  text: adb.getAuthorityList()[0].name,
+                  onPressed: () => _launchCaller(
+                      'tel:$adb.getAuthorityList[0].contactNumber'),
                   icon: IconData(60220, fontFamily: 'MaterialIcons'),
                 ),
                 RoundIconButtonII(
-                  text: "POLICE STATION",
-                  onPressed: () => _launchCaller('tel:999'),
+                  text: adb.getAuthorityList()[1].name,
+                  onPressed: () => _launchCaller(
+                      'tel:$adb.getAuthorityList[1].contactNumber'),
                   icon: IconData(59516, fontFamily: 'MaterialIcons'),
                 ),
                 RoundIconButtonII(
-                  text: "HOSPITAL",
-                  onPressed: () => _launchCaller('tel:995'),
+                  text: adb.getAuthorityList()[2].name,
+                  onPressed: () => _launchCaller(
+                      'tel:$adb.getAuthorityList[2].contactNumber'),
                   icon: IconData(58696, fontFamily: 'MaterialIcons'),
                 ),
               ],
@@ -60,8 +79,7 @@ class EmergencyContacts extends StatelessWidget {
     );
   }
 
-
-///Function to launch the device's dialpad given a phone number
+  ///Function to launch the device's dialpad given a phone number
   _launchCaller(telUrl) async {
     if (await canLaunch(telUrl)) {
       await launch(telUrl);
