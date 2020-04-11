@@ -5,16 +5,18 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_map_polyutil/google_map_polyutil.dart';
-
 import 'localNotifications.dart';
 
 String googleAPIKey = "AIzaSyB9jpG4Ys8xGHf9iyDkbOH3Fz8kB0zaLiI";
 // for my custom icons
 BitmapDescriptor sourceIcon;
 BitmapDescriptor destinationIcon;
+bool dengueEnabled = true;
 
 const LatLng DEST_LOCATION = LatLng(1.353195, 103.681082);
 
+///This class is used to display the dengue clusters and to check if the user's current location lies
+///within a dengue zone
 class Clusters extends StatefulWidget {
   @override
   ClustersState createState() => ClustersState();
@@ -29,19 +31,27 @@ class ClustersState extends State<Clusters> {
   PolylinePoints polylinePoints = PolylinePoints();
   Position position = Position(latitude: 1.353195, longitude: 103.681082);
   @override
+
+  ///Function to initialize the state of the map and then call `getCurrentLocation`
   void initState() {
     super.initState();
     getCurrentLocation();
   }
 
+  ///Function to get and store the user's current location using `getCurrentPosition` function
+  ///from the geolocator package
   getCurrentLocation() async {
     position = await Geolocator().getCurrentPosition();
   }
 
+  ///Display the google map with all the markers, polylines and polygons with the initial camera
+  ///position based on the user's current location
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BaseAppBar(title: "DENGUE CLUSTERS",),
+      appBar: BaseAppBar(
+        title: "DENGUE CLUSTERS",
+      ),
       body: GoogleMap(
           myLocationEnabled: true,
           compassEnabled: true,
@@ -58,12 +68,15 @@ class ClustersState extends State<Clusters> {
     );
   }
 
+  ///Function to set the Google Map controller and call `SetPolyLines` and `SetMapPins` to add the
+  ///markers and the polylines to the map before display
   void onMapCreated(GoogleMapController controller) {
     _controller = controller;
     setPolylines();
     setMapPins();
   }
 
+  ///Function to add the marker of the user's current location to the list of markers
   void setMapPins() {
     setState(() {
       // source pin
@@ -75,37 +88,19 @@ class ClustersState extends State<Clusters> {
     });
   }
 
+  ///Function to set state and call the `parsingwjson` function
   setPolylines() async {
-    List<PointLatLng> result = await polylinePoints?.getRouteBetweenCoordinates(
-        googleAPIKey,
-        position.latitude,
-        position.longitude,
-        DEST_LOCATION.latitude,
-        DEST_LOCATION.longitude);
-    if (result.isNotEmpty) {
-      // loop through all PointLatLng points and convert them
-      // to a list of LatLng, required by the Polyline
-      result.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    }
-
     setState(() {
-      // create a Polyline instance
-      // with an id, an RGB color and the list of LatLng pairs
-      Polyline polyline = Polyline(
-          polylineId: PolylineId("poly"),
-          color: Color.fromARGB(255, 40, 122, 198),
-          points: polylineCoordinates);
-
-      // add the constructed polyline as a set of points
-      // to the polyline set, which will eventually
-      // end up showing up on the map
-      // _polylines.add(polyline);
       parsingwjson();
     });
   }
 
+  ///Function to read the geojson file which contains the information about all the dengue clusters
+  ///After parsing the file, stores the coordinates of each edge point of a cluster in `polylinecoord`
+  ///Once all the polylines are created, respective polygons are added to the map before display
+  ///`isInPolygon` is used to check if the user's current location lies within a dengue zone, if it does
+  ///`showNotification` sends a local notification to the user's device to alert them that they have
+  ///entered a dengue zone
   parsingwjson() async {
     List dummy_data = [];
     bool isInPolygon;
@@ -134,6 +129,7 @@ class ClustersState extends State<Clusters> {
             strokeWidth: 5));
       });
     }
+    
     print("Now checking if point lies within any cluster: ");
     for (int j = 0; j < jsonResult["features"].length; j++) {
       List<LatLng> polygonlinecoord = [];
@@ -157,4 +153,5 @@ class ClustersState extends State<Clusters> {
     }
     print("End of checking process");
   }
+
 }
