@@ -11,25 +11,29 @@ import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'localNotifications.dart';
-/*
-Future<Uint8List> getBytesFromAsset(String path, int width) async {
-  ByteData data = await rootBundle.load(path);
-  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
-  ui.FrameInfo fi = await codec.getNextFrame();
-  return (await fi.image.toByteData(format: ui.ImageByteFormat.png)).buffer.asUint8List();
-}
-*/
+
+/// This class checks if it will be raining in 2 hours and displays the weather map
+/// It fetches weather information from OpenWeatherMap
+/// Checks if it will rain in 2 hours at the user's location
+/// If it will, the user will get a notification
+/// Background Fetch is used to ensure the weather checking process keeps running after the app is terminated
+/// It will check every 15 minutes or so. If it checks that it rains, then it will stop checking for about 2 hours
+
+/// [key] is the api key from OpenWeatherMap used to fetch weather data
 String key = '9b67a8cad7eeefb08f327ade854f869b';
+/// [weatherEnabled] checks if the user agrees to receive notifications on weather
 bool weatherEnabled = true;
 
+/// Background Fetch executes the [getWeather()] regardless of whether the app is opened on the user's device
 void backgroundFetchHeadlessTask(String taskId) async {
   print('[BackgroundFetch] Headless event received.');
   getWeather();
   BackgroundFetch.finish(taskId);
 }
 
+/// Checks if the user gives the app access to information on the current location of the user
+/// Returns the current location of the user
 Future<Position> getLocation() async {
   Future<Position> position;
   PermissionStatus permission = await PermissionHandler()
@@ -42,6 +46,7 @@ Future<Position> getLocation() async {
 
   var geolocator = Geolocator();
 
+  /// checks if the user allows the app to receive information on their location
   GeolocationStatus geolocationStatus =
   await geolocator.checkGeolocationPermissionStatus();
 
@@ -64,7 +69,7 @@ Future<Position> getLocation() async {
   }
   return position;
 }
-
+/// Returns the current location of the user
 Future<Position> _getCurrentLocation() async {
   Position position;
   do {
@@ -75,7 +80,8 @@ Future<Position> _getCurrentLocation() async {
   } while (position == null);
   return position;
 }
-
+/// Based on the user's location, fetch the weather information from OpenWeatherMap
+/// Returns weather information with regards to the user's current position in 2 hours time
 Future<Map> getData() async {
   //await Future.delayed(Duration(seconds: 5)); //Mock delay
   Position position;
@@ -89,6 +95,8 @@ Future<Map> getData() async {
   return content['list'][0];
 }
 
+/// Checks if the weather in 2 hours at the user's location is going to rain
+/// if it is, the date and time of the predicted rain will be returned, else return null
 Future<String> getWeather() async{
   Map future = await getData();
   print("Created the stream");
@@ -101,7 +109,7 @@ Future<String> getWeather() async{
   }
 }
 
-
+/// Initialises the Background fetch for the weather checking process
 Future<void> initPlatformState() async {
   // Configure BackgroundFetch.
   BackgroundFetch.configure(BackgroundFetchConfig(
@@ -119,14 +127,16 @@ Future<void> initPlatformState() async {
     //showNotification(0, "BEANS", "Event received");
     // IMPORTANT:  You must signal completion of your task or the OS can punish your app
     // for taking too long in the background.
+    // Checks the weather and shows notification if it is going to rain in 2 hours at the user's current location
+    // Here the main code to be executed for background fetch
     String time;
     while (weatherEnabled == true) {
       time = await getWeather();
       if(time != null){
-        //Send this push notification when its done
+        //Send this push notification
         showNotification(0, "Alert", "It is going to rain in about 2 hours at your current location");
         print("Gonna rain at $time");
-        sleep(const Duration(hours: 2)); //EDIT THIS
+        sleep(const Duration(hours: 2));
       }
       sleep(const Duration(minutes: 5));
     }
@@ -138,6 +148,7 @@ Future<void> initPlatformState() async {
   });
 }
 
+/// starts the background fetch process
 void register(){
   BackgroundFetch.start().then((int status) {
     print('[BackgroundFetch] start success: $status');
@@ -146,17 +157,20 @@ void register(){
   });
 }
 
+/// stops the background fetch
 void unregister(){
   BackgroundFetch.stop().then((int status) {
     print('[BackgroundFetch] stop success: $status');
   });
 }
 
-//Copying simrita
+// WEATHER MAP Portion
 
+/// [googleAPIKey] is the api key for google maps
 String googleAPIKey = "AIzaSyB9jpG4Ys8xGHf9iyDkbOH3Fz8kB0zaLiI";
+/// coordinates of Singapore, for the map to open up at Singapore
 const LatLng SG_LOCATION = LatLng(1.3694985, 103.80615239);
-
+/// This class displays the Weather Map
 class Weather extends StatefulWidget {
   @override
   WeatherState createState() => WeatherState();
@@ -171,9 +185,11 @@ class WeatherState extends State<Weather> {
   Set<Polygon> poly_points = {};
   PolylinePoints polylinePoints = PolylinePoints();
   Position position;
-  BitmapDescriptor rainIcon;
-  BitmapDescriptor sunIcon;
-  BitmapDescriptor moonIcon;
+  BitmapDescriptor rainIcon; // have to change size of input image if the icon displayed is too big/small
+  BitmapDescriptor sunIcon; // the images are found in assets folder as usual
+  BitmapDescriptor moonIcon; // Remember to add into pubspecyaml
+
+  /// Retrieve the icons for the map here so that it can be ready when the map opens up
   @override
   void initState() {
     super.initState();
@@ -195,6 +211,7 @@ class WeatherState extends State<Weather> {
     });
   }
 
+  /// get Current location of user then set [position] to the current user location
   getCurrentLocation() async {
     position = await Geolocator().getCurrentPosition();
   }
@@ -218,14 +235,15 @@ class WeatherState extends State<Weather> {
           onMapCreated: onMapCreated),
     );
   }
-
+/// set Map Pins when the map is created
   void onMapCreated(GoogleMapController controller) {
     _controller = controller;
     //_controller.complete(controller);
     setMapPins();
   }
 
-
+  /// Check with data.gov.sg for 2 hours weather forecast
+  /// add to [_markers] the rain/sunny/moon icon markers at each location in the weather data depending on the forecasted weather
   void setMapPins() async {
     //await Future.delayed(Duration(seconds: 5)); //Mock delay
     String apiUrl = "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast";
@@ -250,6 +268,7 @@ class WeatherState extends State<Weather> {
         ));
       }
       for (var i = 0; i < forecasts.length; i++) {
+        // put Raining Icons
         if (rain.contains(forecasts[i]["forecast"])) {
           print("Raining");
           _markers.add(Marker(
@@ -262,6 +281,7 @@ class WeatherState extends State<Weather> {
             ),
           ));
         }
+        // Put moon icons
         else if(forecasts[i]["forecast"].contains("Night")) {
           _markers.add(Marker(
             markerId: MarkerId(location[i]["name"]),
@@ -273,6 +293,7 @@ class WeatherState extends State<Weather> {
             ),
           ));
         }
+        // Put Sun Icons
         else{
           _markers.add(Marker(
             markerId: MarkerId(location[i]["name"]),
