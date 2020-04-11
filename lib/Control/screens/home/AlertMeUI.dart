@@ -1,4 +1,4 @@
-import 'package:firebase_tutorial/Control/services/Clusters.dart';
+import 'package:firebase_tutorial/Control/services/DengueDBMS.dart';
 import 'package:firebase_tutorial/Control/services/WeatherDBMS.dart';
 import 'package:firebase_tutorial/Control/services/localNotifications.dart';
 import 'package:firebase_tutorial/shared/RoundIconButton.dart';
@@ -6,7 +6,6 @@ import 'package:firebase_tutorial/shared/baseAppBar.dart';
 import 'package:firebase_tutorial/Control/services/WeatherDBMS.dart' as wdbms;
 import 'package:flutter/material.dart';
 import 'package:preferences/preferences.dart';
-
 
 /// This class contains the UI for the `AlertMe` page.
 /// It consists of two switch toggles to enable/disable notifications desired by the user.
@@ -90,7 +89,7 @@ class _AlertMeUIState extends State<AlertMeUI> {
             children: <Widget>[
               RoundIconButton(
                 icon: IconData(58715, fontFamily: 'MaterialIcons'),
-                mpr: MaterialPageRoute(builder: (context) => Clusters()),
+                mpr: MaterialPageRoute(builder: (context) => DengueDBMS()),
                 text: 'DENGUE',
               ),
               SizedBox(width: 60),

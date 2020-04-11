@@ -15,12 +15,12 @@ BitmapDescriptor destinationIcon;
 
 const LatLng DEST_LOCATION = LatLng(1.353195, 103.681082);
 
-class Clusters extends StatefulWidget {
+class DengueDBMS extends StatefulWidget {
   @override
-  ClustersState createState() => ClustersState();
+  DengueDBMSState createState() => DengueDBMSState();
 }
 
-class ClustersState extends State<Clusters> {
+class DengueDBMSState extends State<DengueDBMS> {
   GoogleMapController _controller;
   Set<Polyline> _polylines = {};
   List<LatLng> polylineCoordinates = [];
@@ -41,7 +41,9 @@ class ClustersState extends State<Clusters> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BaseAppBar(title: "DENGUE CLUSTERS",),
+      appBar: BaseAppBar(
+        title: "DENGUE CLUSTERS",
+      ),
       body: GoogleMap(
           myLocationEnabled: true,
           compassEnabled: true,
