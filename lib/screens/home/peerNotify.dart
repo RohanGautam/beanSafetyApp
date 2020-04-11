@@ -8,6 +8,8 @@ import 'package:firebase_tutorial/services/database.dart';
 
 import 'mapDirections.dart';
 
+/// The UI and intermediate logic for the peer notification system.
+/// Makes the changes to the database using `DatabaseService`.
 class PeerNotify extends StatefulWidget {
   @override
   _PeerNotifyState createState() => _PeerNotifyState();
@@ -185,6 +187,8 @@ class _PeerNotifyState extends State<PeerNotify> {
     );
   }
 
+  /// This function is responsible for getting the current user location and updating it in the database.
+  /// It uses the `CurrentLocation` service to get the users current location, and the `DatabaseService` to update it.
   Future<bool> getAndUpdateLocation(
       UserData currentUserData, User user, DatabaseService userDb) async {
     // get users location
@@ -223,6 +227,7 @@ class _PeerNotifyState extends State<PeerNotify> {
     }
   }
 
+  /// UI widget for the alert level slider
   Widget alertLevelSlider() {
     return Column(
       children: <Widget>[
@@ -249,6 +254,7 @@ class _PeerNotifyState extends State<PeerNotify> {
     );
   }
 
+  /// UI code for the alert type selector
   Widget alertTypeSelector() {
     return Column(
       children: <Widget>[
@@ -282,6 +288,7 @@ class _PeerNotifyState extends State<PeerNotify> {
     'fire': Color(0xFFF05A22),
   };
 
+  /// used to show current selection in `alertTypeSelector`.
   updateBorderColor(String emName) {
     colorMap.forEach((alertType, color) {
       if (alertType == emName.toLowerCase()) {
@@ -299,7 +306,7 @@ class _PeerNotifyState extends State<PeerNotify> {
   Color getBorderColor(String emName) {
     return colorMap[emName.toLowerCase()];
   }
-
+  /// button component in `alertTypeSelector`.
   Widget emergencyOptionButton(String emName, String imagePath) {
     double deviceWidth = (MediaQuery.of(context).size.width / 2) - 40;
     return Container(
@@ -403,11 +410,13 @@ class _PeerNotifyState extends State<PeerNotify> {
         ),
       );
       }
-    } else {
-      return Container();
     }
+    return Container();
+    
   }
 
+  /// This function sends an Alert notification to other users, using a custom firebase cloud function.
+  /// The definition of the cloud function is present in `functions/lib/index.ts` from the project root.
   sendAlertNotification(
       var from, var currentAlertType, var currentAlertLevel) async {
     final HttpsCallable notifyUser =

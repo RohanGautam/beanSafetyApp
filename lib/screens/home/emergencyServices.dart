@@ -4,6 +4,10 @@ import 'package:firebase_tutorial/shared/RoundIconButton.dart';
 import 'package:firebase_tutorial/shared/baseAppBar.dart';
 import 'package:flutter/material.dart';
 
+
+/// This is a UI class for emergency services. It contains the Page and the 
+/// selection buttons for the emergency service type. 
+/// It proceeds to call the service `emergencyServiceMap` to display the specified type of locations on a map.
 class EmergencyServicesUI extends StatelessWidget{
   @override
   Widget build(BuildContext context) {

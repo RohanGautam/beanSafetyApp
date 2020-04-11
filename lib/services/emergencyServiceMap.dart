@@ -5,6 +5,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 
+/// This class returns a map screen, of a specific `type`.
+/// The `type` can be "pharmacy", "hospital", or "police" in our case.
 class MyMap extends StatefulWidget {
   // the type of locations to render on the map
   final String type;
@@ -22,12 +24,15 @@ class _MyMapState extends State<MyMap> {
   List<Marker> markers = <Marker>[];
   Position position;
 
+  /// initially get the current location of the user.
   @override
   void initState() {
     super.initState();
     _getCurrentLocation();
   }
 
+  /// Show a loading screen while the user location is being fetched.
+  /// once we have the `position`, we can show the map.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +54,7 @@ class _MyMapState extends State<MyMap> {
     }
   }
 
+  /// The google map, which will occupy the whole screen
   Widget mapWidget() {
     return GoogleMap(
       mapType: MapType.normal,
@@ -61,6 +67,9 @@ class _MyMapState extends State<MyMap> {
     );
   }
 
+  /// called when the google map is created.
+  /// Adds the pin for the users current location on the map.
+  /// Also, calls `addServiceMarkers` to add surrouding pins for the reuired service.
   _onMapCreated() {
     print("[info] onMapCreated called");
     // add own location's markr to marker list
@@ -77,6 +86,8 @@ class _MyMapState extends State<MyMap> {
     addServiceMarkers();
   }
 
+  /// uses the Google maps places API to fetch nearby locations of desired type.
+  /// It then plots these as markers on the map.
   addServiceMarkers() async {
     print("[info] add service markers called!");
     // get places of needed type using map's places API

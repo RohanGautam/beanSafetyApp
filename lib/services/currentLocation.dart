@@ -1,5 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 
+/// a service class to get the current location of the user.
 class CurrentLocation {
   double latitude;
   double longitude;

@@ -3,6 +3,16 @@ import 'package:firebase_tutorial/shared/loading.dart';
 import 'package:firebase_tutorial/shared/authTextfeildDecoration.dart';
 import 'package:flutter/material.dart';
 
+/// This class is the Register UI. It contains the UI elements for 
+/// the `Register` page, for example the text feilds to enter the username and passoword.
+/// It also performs basic form validation, for example checking if the email is valid, the password
+/// is of specified length, etc. 
+/// Once the form is submitted, it uses the authentication service (in `services/auth.dart`) 
+/// to communicate with firebase and Register the user.
+/// 
+/// Upon successful registration, we do not have to manually route to the `Home` page.
+/// This is because when this happens, the Authentication stream provided by firebase(that we are listening to
+/// in `main.dart` and `wrapper.dart`) is updated automatically, and the nessessary screen transitions take place.
 class Register extends StatefulWidget {
   final Function toggleSignIn;
   //Constructor to accept arguments
@@ -15,6 +25,7 @@ class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
+  // controls if loading screen is shown. The loading screen is shown while we register the user.
   bool loading = false;
   // text field state
   String email = "";
@@ -32,6 +43,8 @@ class _RegisterState extends State<Register> {
               title: Text("Register!"),
               actions: <Widget>[
                 FlatButton.icon(
+                  /// This is calling `authenticate.dart`'s `toggleSignIn` function which we passed to it,
+                  /// to switch to the Sign in page.
                   onPressed: () {
                     widget.toggleSignIn();
                   },

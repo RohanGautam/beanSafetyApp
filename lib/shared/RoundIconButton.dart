@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Custom button Used for showing menu selection options in `emergencyServices.dart` and `alertMe.dart`
 class RoundIconButton extends StatelessWidget {
   String text;
   IconData icon;

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// this class returns an AppBar with the desired `title`.
+/// It also contains a home button, which leads you to the home page regardless of your position in the app.
+/// It is used across majority of the screens in the app, apart from ones where a certain custom `AppBar` is required.
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   BaseAppBar({this.title});

@@ -4,6 +4,12 @@ import 'package:firebase_tutorial/shared/authTextfeildDecoration.dart';
 
 import 'package:flutter/material.dart';
 
+/// This class is the SignIn UI. It contains the UI elements for 
+/// the `SignIn` page, for example the text feilds to enter the username and passoword.
+/// It also performs basic form validation, for example checking if the email is valid, the password
+/// is of specified length, etc. 
+/// Once the form is submitted, it uses the authentication service (in `services/auth.dart`) 
+/// to communicate with firebase and sign in the user.
 class SignIn extends StatefulWidget {
   final Function toggleSignIn;
   //Constructor to accept arguments
@@ -16,7 +22,7 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
-
+  // controls if loading screen is shown. The loading screen is shown while we check if the account is valid or not.
   bool loading = false;
   // text field state
   String email = "";
@@ -35,6 +41,8 @@ class _SignInState extends State<SignIn> {
               actions: <Widget>[
                 FlatButton.icon(
                   onPressed: () {
+                    /// This is calling `authenticate.dart`'s `toggleSignIn` function which we passed to it,
+                    /// to switch to the register page.
                     widget.toggleSignIn();
                   },
                   icon: Icon(Icons.person),
@@ -136,24 +144,4 @@ class _SignInState extends State<SignIn> {
             ),
           );
   }
-
-  // textInputDecoration(String text) {
-  //   return InputDecoration(
-  //     labelText: text,
-  //     labelStyle: TextStyle(color: Colors.brown),
-  //     // fillColor: Colors.white,
-  //     focusedBorder: OutlineInputBorder(
-  //       borderRadius: BorderRadius.circular(25.0),
-  //       borderSide: BorderSide(color: Colors.deepOrange),
-  //     ),
-  //     enabledBorder: OutlineInputBorder(
-  //       borderRadius: BorderRadius.circular(25.0),
-  //       borderSide: BorderSide(color: Colors.red[100]),
-  //     ),
-  //     border: OutlineInputBorder(
-  //       borderRadius: BorderRadius.circular(25.0),
-  //       borderSide: BorderSide(color: Colors.red[100]),
-  //     ),
-  //   );
-  // }
 }

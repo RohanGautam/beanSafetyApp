@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// this function returns the style for the textfeilds used across
+/// the `SignIn` and `Register` pages.
 textInputDecoration(String text) {
   return InputDecoration(
     labelText: text,

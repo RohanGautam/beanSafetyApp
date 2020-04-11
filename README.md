@@ -30,6 +30,7 @@
 
 # TODO: 
 * do something with the toggle dengue button in `alertMe.dart`
+* user currentlocation service for getting current location of the user everywhere.
 * remove api key from `android/app/src/main/AndroidManifest.xml` and everywhere else after project is over.
 
 # Login process

@@ -4,6 +4,11 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+
+/// this class contains the UI for displaying a map with a source and a destination,
+/// and a line/path connecting the two. This is used by a Responder to view and go towards an alerter's location.
+/// It also contains buttons to view youtube tutorials on how to respond, and an option to
+/// dial the alerter.
 class MapDirections extends StatefulWidget {
   final sLat;
   final sLng;
@@ -67,6 +72,7 @@ class _MapDirectionsState extends State<MapDirections> {
     );
   }
 
+  //. UI for button to launch custom URL's
   Widget launchURLButton(text, onPressed, color) {
     return RaisedButton(
       child: Padding(
@@ -85,6 +91,7 @@ class _MapDirectionsState extends State<MapDirections> {
     );
   }
 
+  /// function which opens specified `url` when invoked.
   _launchURL(url) async {
     if (await canLaunch(url)) {
       await launch(url);
@@ -93,12 +100,15 @@ class _MapDirectionsState extends State<MapDirections> {
     }
   }
 
+  /// This function is called when the google map is created. 
+  /// We set the pins and show the path in this function.
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
     setMapPins();
     setPolylines();
   }
 
+  //. function to set the responder's and alerter's pins
   void setMapPins() {
     SOURCE_LOCATION = LatLng(widget.sLat, widget.sLng);
     DEST_LOCATION = LatLng(widget.dLat, widget.dLng);
@@ -119,6 +129,7 @@ class _MapDirectionsState extends State<MapDirections> {
     });
   }
 
+  /// function to show the path between the responder and alerter's pins
   setPolylines() async {
     List<PointLatLng> result = await polylinePoints?.getRouteBetweenCoordinates(
         googleAPIKey,

@@ -3,28 +3,31 @@ import 'package:firebase_tutorial/models/user.dart';
 import 'package:firebase_tutorial/services/database.dart';
 import 'package:firebase_tutorial/services/pushNotification.dart';
 
+
+/// This is the class that handles all the authentication communications with Firebase.
+/// Contains functions used in the authentication files present in `lib/screens/authenticate`.
 class AuthService {
-  // Will have all the methods to interact with firebase
 
   final FirebaseAuth _auth = FirebaseAuth.instance; // _ means it's private
   PushNotificationService pns = PushNotificationService();
 
-  //Create custom user obj based on firebase user
+  /// To Create custom `User` obj (based on our user model in `lib/models`) based on firebase user.
+  /// Basically, to parse the firebase response into a custom object which only contains a subset 
+  /// of the information we need.
   User _userFromFirebaseUser(FirebaseUser user) {
     return user != null ? User(uid: user.uid) : null;
   }
 
-  // auth change user stream
+  /// auth change user stream.
+  /// This is the stream that parent widgets (like `main.dart`) listen to, to be notified of authentication changes.
+  /// 
+  /// Returns a firebase user, mapped to custom `User` object when change in auth- sign in or out.
   Stream<User> get user {
-    // getter fn's defined like this in dart
-    // we want to listen for auth changes at the top level of the app thru this- using "Provider"
-    // returns a firebase user when change in auth- sign in or out
-    // note the fat arrow notation to define functions(optional)
     return _auth.onAuthStateChanged
         .map(_userFromFirebaseUser); // stream of custom objects
   }
 
-  // sign in: anon
+  // sign in anonymously. Not used but Could be a future feature in cases of real emergencies, so keeping for time being.
   Future signInAnon() async {
     try {
       AuthResult result = await _auth.signInAnonymously();
@@ -36,7 +39,8 @@ class AuthService {
     }
   }
 
-  // sign in: email, pw
+  /// Sign in with specified `email` and `password` using Firebase Auth.
+  /// Firebase checks if such a user exists, and returns the `User` ubject if it does and `null` otherwise.
   Future signInEmailAndPassword(String email, String password) async {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -47,7 +51,11 @@ class AuthService {
       return null;
     }
   }
-  // register: email, pw
+  /// register with specified `email` and `password` using Firebase Auth.
+  /// We create an entry for this new user in our Firestore Database, using the `DatabaseService`.
+  /// When the user is registering, is the time we also get and store the users `fcm` token.
+  /// This token is used by firebase to uniquely identify a device, and is used for sending targeted push notifications
+  /// to users during the peer alerting process.
   Future registerEmailAndPassword(String email, String password) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
@@ -66,7 +74,8 @@ class AuthService {
     }
   }
 
-  // sign Out
+  /// Sign out of the current session. This sign out event is also reflected in the auth stream, 
+  /// so we show signin and register pages once this happens.
   Future signOut() async {
     try {
       return await _auth.signOut();

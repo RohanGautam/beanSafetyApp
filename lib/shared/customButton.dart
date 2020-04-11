@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// A Custom red colored flat button 
+/// A Custom red colored flat button . This is used in our `Home` page for dispaying menu options.
 class CustomButton extends StatelessWidget implements PreferredSizeWidget {
   String text;
   MaterialPageRoute mpr;

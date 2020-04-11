@@ -8,6 +8,11 @@ import 'package:firebase_tutorial/services/WeatherDBMS.dart' as wdbms;
 import 'package:flutter/material.dart';
 import 'package:preferences/preferences.dart';
 
+
+/// This class contains the UI for the `AlertMe` page.
+/// It consists of two switch toggles to enable/disable notifications desired by the user.
+/// It also calls two map services - allowing you to view dengue clusters and allowing you
+/// to view weather conditions near your current location.
 class AlertMeUI extends StatefulWidget {
   @override
   _AlertMeUIState createState() => _AlertMeUIState();

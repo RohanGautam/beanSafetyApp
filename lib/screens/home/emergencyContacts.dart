@@ -3,6 +3,9 @@ import 'package:firebase_tutorial/shared/baseAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+///This class is to contact the emergency services: Fire station, Police station and Ambulance
+///When the button to call the service is clicked it takes you to the phone's dialpad with the 
+///authority's number pre-filled into the dialpad using `_launchCaller` function 
 class EmergencyContacts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -57,34 +60,8 @@ class EmergencyContacts extends StatelessWidget {
     );
   }
 
-  Widget emContactButton(var text, var onPressed) {
-    return Column(
-      children: <Widget>[
-        SizedBox(height: 40),
-        SizedBox(
-          width: 200.0,
-          height: 70.0,
-          child: FlatButton(
-            shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(18.0),
-                side: BorderSide(color: Colors.red)),
-            color: Colors.red,
-            textColor: Colors.white,
-            padding: EdgeInsets.all(8.0),
-            onPressed: onPressed,
-            child: Text(
-              text.toUpperCase(),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
+///Function to launch the device's dialpad given a phone number
   _launchCaller(telUrl) async {
     if (await canLaunch(telUrl)) {
       await launch(telUrl);
