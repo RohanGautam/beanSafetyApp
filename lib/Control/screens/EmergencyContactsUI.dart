@@ -14,17 +14,6 @@ class EmergencyContacts extends StatefulWidget {
 }
 
 class _EmergencyContactsState extends State<EmergencyContacts> {
-  AuthorityDB adb;
-
-  void addAuthority() {
-    adb.setAuthorityList(
-        Authority(name: 'FIRE STATION', contactNumber: '995', iconID: 60220));
-    adb.setAuthorityList(
-        Authority(name: 'POLICE STATION', contactNumber: '999', iconID: 59516));
-    adb.setAuthorityList(
-        Authority(name: 'HOSPITAL', contactNumber: '995', iconID: 58696));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +23,7 @@ class _EmergencyContactsState extends State<EmergencyContacts> {
           Positioned(
               width: MediaQuery.of(context).size.width,
               top: MediaQuery.of(context).size.width *
-                  0.05, //TRY TO CHANGE THIS *0.30* value to achieve your goal
+                  0.05, //TRY TO CHANGE THIS 0.30 value to achieve your goal
               child: Container(
                 margin: EdgeInsets.all(16.0),
                 child: Column(
@@ -56,25 +45,19 @@ class _EmergencyContactsState extends State<EmergencyContacts> {
               childAspectRatio: 3,
               children: <Widget>[
                 RoundIconButtonII(
-                  text: adb.getAuthorityList()[0].name,
-                  onPressed: () => _launchCaller(
-                      'tel:$adb.getAuthorityList[0].contactNumber'),
-                  icon: IconData(adb.getAuthorityList()[0].iconID,
-                      fontFamily: 'MaterialIcons'),
+                  text: 'FIRE STATION',
+                  onPressed: () => _launchCaller('tel:995'),
+                  icon: IconData(60220, fontFamily: 'MaterialIcons'),
                 ),
                 RoundIconButtonII(
-                  text: adb.getAuthorityList()[1].name,
-                  onPressed: () => _launchCaller(
-                      'tel:$adb.getAuthorityList[1].contactNumber'),
-                  icon: IconData(adb.getAuthorityList()[1].iconID,
-                      fontFamily: 'MaterialIcons'),
+                  text: 'POLICE STATION',
+                  onPressed: () => _launchCaller('tel:999'),
+                  icon: IconData(59516, fontFamily: 'MaterialIcons'),
                 ),
                 RoundIconButtonII(
-                  text: adb.getAuthorityList()[2].name,
-                  onPressed: () => _launchCaller(
-                      'tel:$adb.getAuthorityList[2].contactNumber'),
-                  icon: IconData(adb.getAuthorityList()[2].iconID,
-                      fontFamily: 'MaterialIcons'),
+                  text: 'HOSPITAL',
+                  onPressed: () => _launchCaller('tel:995'),
+                  icon: IconData(58696, fontFamily: 'MaterialIcons'),
                 ),
               ],
             ),

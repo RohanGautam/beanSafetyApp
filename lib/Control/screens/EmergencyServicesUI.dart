@@ -1,6 +1,7 @@
 import 'package:firebase_tutorial/Control/services/EmergencyServiceMap.dart';
 import 'package:firebase_tutorial/Widget/RoundIconButton.dart';
 import 'package:firebase_tutorial/Widget/BaseAppBar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_tutorial/Entity/EmergencyService.dart';
 import 'package:firebase_tutorial/Entity/EmergencyServiceDB.dart';
@@ -9,14 +10,6 @@ import 'package:firebase_tutorial/Entity/EmergencyServiceDB.dart';
 /// selection buttons for the emergency service type.
 /// It proceeds to call the service `emergencyServiceMap` to display the specified type of locations on a map.
 class EmergencyServicesUI extends StatelessWidget {
-  EmergencyServiceDB sdb;
-
-  void addService() {
-    sdb.setServiceList(EmergencyService(name: 'hospital', iconID: 58696));
-    sdb.setServiceList(EmergencyService(name: 'pharmacy', iconID: 58704));
-    sdb.setServiceList(EmergencyService(name: 'police', iconID: 59516));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +19,7 @@ class EmergencyServicesUI extends StatelessWidget {
             Positioned(
                 width: MediaQuery.of(context).size.width,
                 top: MediaQuery.of(context).size.width *
-                    0.02, //TRY TO CHANGE THIS *0.30* value to achieve your goal
+                    0.02, //TRY TO CHANGE THIS 0.30 value to achieve your goal
                 child: Container(
                   margin: EdgeInsets.all(16.0),
                   child: Column(
@@ -52,28 +45,22 @@ class EmergencyServicesUI extends StatelessWidget {
                 //shrinkWrap: true,
                 children: <Widget>[
                   RoundIconButton(
-                    icon: IconData(sdb.getServiceList()[0].iconID,
-                        fontFamily: 'MaterialIcons'),
+                    icon: IconData(58696, fontFamily: 'MaterialIcons'),
                     mpr: MaterialPageRoute(
-                        builder: (context) => MyMap(
-                            type: sdb.getServiceList()[0].name.toLowerCase())),
-                    text: sdb.getServiceList()[0].name.toUpperCase(),
+                        builder: (context) => MyMap(type: 'hospital')),
+                    text: 'HOSPITAL',
                   ),
                   RoundIconButton(
-                    icon: IconData(sdb.getServiceList()[1].iconID,
-                        fontFamily: 'MaterialIcons'),
+                    icon: IconData(58704, fontFamily: 'MaterialIcons'),
                     mpr: MaterialPageRoute(
-                        builder: (context) => MyMap(
-                            type: sdb.getServiceList()[1].name.toLowerCase())),
-                    text: sdb.getServiceList()[1].name.toUpperCase(),
+                        builder: (context) => MyMap(type: 'pharmacy')),
+                    text: 'PHARMACY',
                   ),
                   RoundIconButton(
-                    icon: IconData(sdb.getServiceList()[2].iconID,
-                        fontFamily: 'MaterialIcons'),
+                    icon: IconData(59516, fontFamily: 'MaterialIcons'),
                     mpr: MaterialPageRoute(
-                        builder: (context) => MyMap(
-                            type: sdb.getServiceList()[2].name.toLowerCase())),
-                    text: sdb.getServiceList()[2].name.toUpperCase(),
+                        builder: (context) => MyMap(type: 'police')),
+                    text: 'POLICE',
                   ),
                 ],
               ),
