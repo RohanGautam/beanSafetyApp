@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_map_polyutil/google_map_polyutil.dart';
+import 'package:background_fetch/background_fetch.dart';
 
 import 'localNotifications.dart';
 
@@ -159,4 +160,19 @@ class DengueDBMSState extends State<DengueDBMS> {
     }
     print("End of checking process");
   }
+}
+
+void register() {
+  BackgroundFetch.start().then((int status) {
+    print('[BackgroundFetch] start success: $status');
+  }).catchError((e) {
+    print('[BackgroundFetch] start FAILURE: $e');
+  });
+}
+
+/// stops the background fetch
+void unregister() {
+  BackgroundFetch.stop().then((int status) {
+    print('[BackgroundFetch] stop success: $status');
+  });
 }

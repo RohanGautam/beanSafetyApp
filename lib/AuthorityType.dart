@@ -1,0 +1,1 @@
+enum AuthorityType { HOSPITAL, POLICE, FIRESTATION }
