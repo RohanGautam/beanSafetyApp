@@ -1,19 +1,23 @@
-import 'package:firebase_tutorial/Control/screens/home/alertMe.dart';
+import 'package:firebase_tutorial/Control/screens/AlertMeUI.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:firebase_tutorial/Control/screens/home/home.dart';
+import 'package:firebase_tutorial/Control/screens/HomePageUI.dart';
 
 /// This is the control class for push notifications sent locally
 /// [localNotifications] can be used when the event to trigger the notification is in the current user's app
 /// Import this class into any other files and call showNotifications to send notifications locally
 
 /// Create instance of FlutterLocalNotificationsPlugin
-FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    new FlutterLocalNotificationsPlugin();
+
 /// Local Notification Settings to be initialised for Android
 var initialisationSettingsAndroid;
+
 /// Local Notification Settings to be initialised for IOS
 var initialisationSettingsIOS;
+
 /// Generic Local Notification Settings to be initialised
 var initialisationSettings;
 
@@ -37,10 +41,10 @@ Future<void> _demoNotification(int id, String title, String body) async {
     ticker: 'test ticker',
   );
   var iOSChannelSpecifics = IOSNotificationDetails();
-  var platformChannelSpecifics = NotificationDetails(androidPlatformChannelSpecifics, iOSChannelSpecifics);
-  await flutterLocalNotificationsPlugin.show(
-      id, title, body, platformChannelSpecifics,
-      payload: 'test payload');
+  var platformChannelSpecifics =
+      NotificationDetails(androidPlatformChannelSpecifics, iOSChannelSpecifics);
+  await flutterLocalNotificationsPlugin
+      .show(id, title, body, platformChannelSpecifics, payload: 'test payload');
 }
 
 /// Initialise Local Notifications
@@ -63,8 +67,8 @@ Future onSelectNotification(String payload) async {
   if (payload != null) {
     debugPrint("Notification payload: $payload");
   }
-  await Navigator.push(
-      HomeState().context, new MaterialPageRoute(builder: (context) => AlertMeUI()));
+  await Navigator.push(HomePageUIState().context,
+      new MaterialPageRoute(builder: (context) => AlertMeUI()));
 }
 
 /// This is the dialog shown in IOS
@@ -72,7 +76,7 @@ Future onSelectNotification(String payload) async {
 Future onDidReceiveLocalNotification(
     int id, String title, String body, String payload) async {
   await showDialog(
-    context: HomeState().context,
+    context: HomePageUIState().context,
     builder: (BuildContext context) => CupertinoAlertDialog(
       title: Text(title),
       content: Text(body),

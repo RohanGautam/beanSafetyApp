@@ -1,10 +1,10 @@
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_tutorial/Entity/models/user.dart';
-import 'package:firebase_tutorial/Entity/models/userData.dart';
+import 'package:firebase_tutorial/Entity/User.dart';
+import 'package:firebase_tutorial/Entity/UserData.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_tutorial/Entity/currentLocation.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_tutorial/Entity/database.dart';
+import 'package:firebase_tutorial/Entity/UserDB.dart';
 
 import 'MapDirections.dart';
 
@@ -35,7 +35,7 @@ class _PeerNotifyState extends State<PeerNotify> {
         currentUserData = data;
       }
     });
-    DatabaseService userDb = DatabaseService(uid: user.uid);
+    UserDB userDb = UserDB(uid: user.uid);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -47,7 +47,7 @@ class _PeerNotifyState extends State<PeerNotify> {
           FlatButton.icon(
             onPressed: () async {
               userData.forEach((data) async {
-                await DatabaseService(uid: data.uid)
+                await UserDB(uid: data.uid)
                     .updateUserData(0.0, 0.0, false, false, false, "none", 0);
               });
             },
@@ -99,7 +99,7 @@ class _PeerNotifyState extends State<PeerNotify> {
                           userData.forEach((data) async {
                             if (data.uid != user.uid) {
                               print("Alert- updating ${data.uid} ");
-                              var r2 = await DatabaseService(uid: data.uid)
+                              var r2 = await UserDB(uid: data.uid)
                                   .updateUserData(
                                       data.latitude,
                                       data.longitude,
@@ -190,7 +190,7 @@ class _PeerNotifyState extends State<PeerNotify> {
   /// This function is responsible for getting the current user location and updating it in the database.
   /// It uses the `CurrentLocation` service to get the users current location, and the `DatabaseService` to update it.
   Future<bool> getAndUpdateLocation(
-      UserData currentUserData, User user, DatabaseService userDb) async {
+      UserData currentUserData, User user, UserDB userDb) async {
     // get users location
     var location = await CurrentLocation().getCurrentLocation();
     if (location != null) {
@@ -306,6 +306,7 @@ class _PeerNotifyState extends State<PeerNotify> {
   Color getBorderColor(String emName) {
     return colorMap[emName.toLowerCase()];
   }
+
   /// button component in `alertTypeSelector`.
   Widget emergencyOptionButton(String emName, String imagePath) {
     double deviceWidth = (MediaQuery.of(context).size.width / 2) - 40;
@@ -372,7 +373,8 @@ class _PeerNotifyState extends State<PeerNotify> {
     if (currentUserData.alerted && currentUserData.responder == false) {
       userData.forEach((data) {
         if (data.alerter == true) {
-          alertStatus = "Type: ${data.alertType}, urgency level:  ${data.alertLevel}";
+          alertStatus =
+              "Type: ${data.alertType}, urgency level:  ${data.alertLevel}";
           alerted = true;
           // alertStatus =
           //     "Alerted!!!! type ${data.alertType}, level ${data.alertLevel} location ${data.latitude}, ${data.longitude}";
@@ -384,35 +386,52 @@ class _PeerNotifyState extends State<PeerNotify> {
     }
     userData.forEach((data) {
       if (data.responder == true && (data.uid != currentUserData.uid)) {
-        alertStatus = "Responder ${data.uid.substring(0,5)} on the way.";
+        alertStatus = "Responder ${data.uid.substring(0, 5)} on the way.";
         showResponder = true;
       }
     });
-    if (alertStatus!=""){
+    if (alertStatus != "") {
       if (alerted && (currentUserData.responder) || !showResponder) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            Text("You have been alerted!", style: TextStyle(fontSize: 18, color: Colors.red, fontWeight:FontWeight.bold),),
-            Text(alertStatus, style: TextStyle(fontSize: 20),),
-          ],
-        ),
-      );
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              Text(
+                "You have been alerted!",
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                alertStatus,
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
+        );
       } else if (showResponder) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            Text("Someone's on their way to help.", style: TextStyle(fontSize: 18, color: Colors.green[900], fontWeight:FontWeight.bold),),
-            Text(alertStatus, style: TextStyle(fontSize: 20),),
-          ],
-        ),
-      );
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              Text(
+                "Someone's on their way to help.",
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.green[900],
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                alertStatus,
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
+        );
       }
     }
     return Container();
-    
   }
 
   /// This function sends an Alert notification to other users, using a custom firebase cloud function.

@@ -1,8 +1,8 @@
 import 'package:firebase_tutorial/Control/services/DengueDBMS.dart';
 import 'package:firebase_tutorial/Control/services/WeatherDBMS.dart';
 import 'package:firebase_tutorial/Control/services/localNotifications.dart';
-import 'package:firebase_tutorial/shared/RoundIconButton.dart';
-import 'package:firebase_tutorial/shared/baseAppBar.dart';
+import 'package:firebase_tutorial/Widget/RoundIconButton.dart';
+import 'package:firebase_tutorial/Widget/BaseAppBar.dart';
 import 'package:firebase_tutorial/Control/services/WeatherDBMS.dart' as wdbms;
 import 'package:flutter/material.dart';
 import 'package:preferences/preferences.dart';

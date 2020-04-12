@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:background_fetch/background_fetch.dart';
-import 'package:firebase_tutorial/shared/baseAppBar.dart';
-import 'package:flutter/services.dart';
+import 'package:firebase_tutorial/Widget/BaseAppBar.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -22,6 +21,7 @@ import 'localNotifications.dart';
 
 /// [key] is the api key from OpenWeatherMap used to fetch weather data
 String key = '9b67a8cad7eeefb08f327ade854f869b';
+
 /// [weatherEnabled] checks if the user agrees to receive notifications on weather
 bool weatherEnabled = true;
 
@@ -36,8 +36,8 @@ void backgroundFetchHeadlessTask(String taskId) async {
 /// Returns the current location of the user
 Future<Position> getLocation() async {
   Future<Position> position;
-  PermissionStatus permission = await PermissionHandler()
-      .checkPermissionStatus(PermissionGroup.location);
+  PermissionStatus permission =
+      await PermissionHandler().checkPermissionStatus(PermissionGroup.location);
 
   if (permission == PermissionStatus.denied) {
     await PermissionHandler()
@@ -48,7 +48,7 @@ Future<Position> getLocation() async {
 
   /// checks if the user allows the app to receive information on their location
   GeolocationStatus geolocationStatus =
-  await geolocator.checkGeolocationPermissionStatus();
+      await geolocator.checkGeolocationPermissionStatus();
 
   switch (geolocationStatus) {
     case GeolocationStatus.denied:
@@ -69,6 +69,7 @@ Future<Position> getLocation() async {
   }
   return position;
 }
+
 /// Returns the current location of the user
 Future<Position> _getCurrentLocation() async {
   Position position;
@@ -80,14 +81,19 @@ Future<Position> _getCurrentLocation() async {
   } while (position == null);
   return position;
 }
+
 /// Based on the user's location, fetch the weather information from OpenWeatherMap
 /// Returns weather information with regards to the user's current position in 2 hours time
 Future<Map> getData() async {
   //await Future.delayed(Duration(seconds: 5)); //Mock delay
   Position position;
-  do{position = await getLocation(); await Future.delayed(Duration(seconds: 1));}while(position==null);
+  do {
+    position = await getLocation();
+    await Future.delayed(Duration(seconds: 1));
+  } while (position == null);
   print("get Data $position");
-  String apiUrl ="http://api.openweathermap.org/data/2.5/forecast?lat=${position.latitude}&lon=${position.longitude}&appid=$key&units=metric";
+  String apiUrl =
+      "http://api.openweathermap.org/data/2.5/forecast?lat=${position.latitude}&lon=${position.longitude}&appid=$key&units=metric";
   print(apiUrl);
   http.Response response = await http.get(apiUrl);
   Map content = json.decode(response.body);
@@ -97,14 +103,14 @@ Future<Map> getData() async {
 
 /// Checks if the weather in 2 hours at the user's location is going to rain
 /// if it is, the date and time of the predicted rain will be returned, else return null
-Future<String> getWeather() async{
+Future<String> getWeather() async {
   Map future = await getData();
   print("Created the stream");
   print(future);
-  if(future['weather'][0]['main'] == "Rain"){
+  if (future['weather'][0]['main'] == "Rain") {
     print("It might rain at ${future['dt_txt'].toString()}");
     return future['dt_txt'].toString();
-  }else{
+  } else {
     return null;
   }
 }
@@ -112,16 +118,16 @@ Future<String> getWeather() async{
 /// Initialises the Background fetch for the weather checking process
 Future<void> initPlatformState() async {
   // Configure BackgroundFetch.
-  BackgroundFetch.configure(BackgroundFetchConfig(
-      minimumFetchInterval: 15,
-      stopOnTerminate: false,
-      enableHeadless: true,
-      requiresBatteryNotLow: false,
-      requiresCharging: false,
-      requiresStorageNotLow: false,
-      requiresDeviceIdle: false,
-      requiredNetworkType: NetworkType.NONE
-  ), (String taskId) async {
+  BackgroundFetch.configure(
+      BackgroundFetchConfig(
+          minimumFetchInterval: 15,
+          stopOnTerminate: false,
+          enableHeadless: true,
+          requiresBatteryNotLow: false,
+          requiresCharging: false,
+          requiresStorageNotLow: false,
+          requiresDeviceIdle: false,
+          requiredNetworkType: NetworkType.NONE), (String taskId) async {
     // This is the fetch-event callback.
     print("[BackgroundFetch] Event received $taskId");
     //showNotification(0, "BEANS", "Event received");
@@ -132,9 +138,10 @@ Future<void> initPlatformState() async {
     String time;
     while (weatherEnabled == true) {
       time = await getWeather();
-      if(time != null){
+      if (time != null) {
         //Send this push notification
-        showNotification(0, "Alert", "It is going to rain in about 2 hours at your current location");
+        showNotification(0, "Alert",
+            "It is going to rain in about 2 hours at your current location");
         print("Gonna rain at $time");
         sleep(const Duration(hours: 2));
       }
@@ -149,7 +156,7 @@ Future<void> initPlatformState() async {
 }
 
 /// starts the background fetch process
-void register(){
+void register() {
   BackgroundFetch.start().then((int status) {
     print('[BackgroundFetch] start success: $status');
   }).catchError((e) {
@@ -158,7 +165,7 @@ void register(){
 }
 
 /// stops the background fetch
-void unregister(){
+void unregister() {
   BackgroundFetch.stop().then((int status) {
     print('[BackgroundFetch] stop success: $status');
   });
@@ -168,8 +175,10 @@ void unregister(){
 
 /// [googleAPIKey] is the api key for google maps
 String googleAPIKey = "AIzaSyB9jpG4Ys8xGHf9iyDkbOH3Fz8kB0zaLiI";
+
 /// coordinates of Singapore, for the map to open up at Singapore
 const LatLng SG_LOCATION = LatLng(1.3694985, 103.80615239);
+
 /// This class displays the Weather Map
 class Weather extends StatefulWidget {
   @override
@@ -185,7 +194,8 @@ class WeatherState extends State<Weather> {
   Set<Polygon> poly_points = {};
   PolylinePoints polylinePoints = PolylinePoints();
   Position position;
-  BitmapDescriptor rainIcon; // have to change size of input image if the icon displayed is too big/small
+  BitmapDescriptor
+      rainIcon; // have to change size of input image if the icon displayed is too big/small
   BitmapDescriptor sunIcon; // the images are found in assets folder as usual
   BitmapDescriptor moonIcon; // Remember to add into pubspecyaml
 
@@ -195,17 +205,17 @@ class WeatherState extends State<Weather> {
     super.initState();
     //showNotification(0, "BEANS", "Initialise");
     BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(size: Size(48, 48)), 'assets/rain.png')
+            ImageConfiguration(size: Size(48, 48)), 'assets/rain.png')
         .then((onValue) {
       rainIcon = onValue;
     });
     BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(size: Size(48, 48)), 'assets/sunny.png')
+            ImageConfiguration(size: Size(48, 48)), 'assets/sunny.png')
         .then((onValue) {
       sunIcon = onValue;
     });
     BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(size: Size(48, 48)), 'assets/moon.png')
+            ImageConfiguration(size: Size(48, 48)), 'assets/moon.png')
         .then((onValue) {
       moonIcon = onValue;
     });
@@ -235,7 +245,8 @@ class WeatherState extends State<Weather> {
           onMapCreated: onMapCreated),
     );
   }
-/// set Map Pins when the map is created
+
+  /// set Map Pins when the map is created
   void onMapCreated(GoogleMapController controller) {
     _controller = controller;
     //_controller.complete(controller);
@@ -246,7 +257,8 @@ class WeatherState extends State<Weather> {
   /// add to [_markers] the rain/sunny/moon icon markers at each location in the weather data depending on the forecasted weather
   void setMapPins() async {
     //await Future.delayed(Duration(seconds: 5)); //Mock delay
-    String apiUrl = "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast";
+    String apiUrl =
+        "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast";
     print(apiUrl);
     http.Response response = await http.get(apiUrl);
     int statusCode = response.statusCode;
@@ -256,15 +268,23 @@ class WeatherState extends State<Weather> {
     List location = content["area_metadata"];
     List forecasts = content["items"][0]["forecasts"];
     print(forecasts[1]["area"]);
-    List<String> rain = ["Showers","Thundery Showers","Heavy Thundery Showers","Moderate Rain","Light Rain","Heavy Thundery Showers with Gusty Winds"];
+    List<String> rain = [
+      "Showers",
+      "Thundery Showers",
+      "Heavy Thundery Showers",
+      "Moderate Rain",
+      "Light Rain",
+      "Heavy Thundery Showers with Gusty Winds"
+    ];
 
     setState(() {
-      if(position != null){
+      if (position != null) {
         print("Home Marker");
         _markers.add(Marker(
           markerId: MarkerId('home'),
           position: LatLng(position.latitude, position.longitude),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
         ));
       }
       for (var i = 0; i < forecasts.length; i++) {
@@ -282,7 +302,7 @@ class WeatherState extends State<Weather> {
           ));
         }
         // Put moon icons
-        else if(forecasts[i]["forecast"].contains("Night")) {
+        else if (forecasts[i]["forecast"].contains("Night")) {
           _markers.add(Marker(
             markerId: MarkerId(location[i]["name"]),
             position: LatLng(location[i]["label_location"]["latitude"],
@@ -294,7 +314,7 @@ class WeatherState extends State<Weather> {
           ));
         }
         // Put Sun Icons
-        else{
+        else {
           _markers.add(Marker(
             markerId: MarkerId(location[i]["name"]),
             position: LatLng(location[i]["label_location"]["latitude"],

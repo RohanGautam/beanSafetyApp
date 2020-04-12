@@ -1,5 +1,5 @@
-import 'package:firebase_tutorial/Widget/shared/RoundIconButtonII.dart';
-import 'package:firebase_tutorial/Widget/shared/BaseAppBar.dart';
+import 'package:firebase_tutorial/Widget/RoundIconButtonII.dart';
+import 'package:firebase_tutorial/Widget/BaseAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_tutorial/Entity/AuthorityDB.dart';

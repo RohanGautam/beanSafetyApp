@@ -1,15 +1,15 @@
-import 'package:firebase_tutorial/Control/services/auth.dart';
-import 'package:firebase_tutorial/shared/loading.dart';
-import 'package:firebase_tutorial/shared/authTextfeildDecoration.dart';
+import 'package:firebase_tutorial/Control/services/AuthenticationService.dart';
+import 'package:firebase_tutorial/Widget/LoadingScreen.dart';
+import 'package:firebase_tutorial/Widget/TextInputDecoration.dart';
 import 'package:flutter/material.dart';
 
-/// This class is the Register UI. It contains the UI elements for 
+/// This class is the Register UI. It contains the UI elements for
 /// the `Register` page, for example the text feilds to enter the username and passoword.
 /// It also performs basic form validation, for example checking if the email is valid, the password
-/// is of specified length, etc. 
+/// is of specified length, etc.
 /// Once the form is submitted, it uses the authentication service (in `services/AuthorisationService.dart`)
 /// to communicate with firebase and Register the user.
-/// 
+///
 /// Upon successful registration, we do not have to manually route to the `Home` page.
 /// This is because when this happens, the Authentication stream provided by firebase(that we are listening to
 /// in `main.dart` and `Wrapper.dart`) is updated automatically, and the nessessary screen transitions take place.
@@ -105,7 +105,9 @@ class _RegisterState extends State<Register> {
                       RaisedButton(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text("Register",style: TextStyle(fontSize: 25, color: Colors.white)),
+                          child: Text("Register",
+                              style:
+                                  TextStyle(fontSize: 25, color: Colors.white)),
                         ),
                         color: Colors.red[300],
                         shape: new RoundedRectangleBorder(

@@ -1,9 +1,8 @@
-import 'package:firebase_tutorial/shared/baseAppBar.dart';
+import 'package:firebase_tutorial/Widget/BaseAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 
 /// this class contains the UI for displaying a map with a source and a destination,
 /// and a line/path connecting the two. This is used by a Responder to view and go towards an alerter's location.
@@ -42,7 +41,9 @@ class _MapDirectionsState extends State<MapDirections> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: BaseAppBar(title: 'GO TO ALERTER',),
+      appBar: BaseAppBar(
+        title: 'GO TO ALERTER',
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -64,8 +65,12 @@ class _MapDirectionsState extends State<MapDirections> {
                 ),
               ),
             ),
-            launchURLButton("Watch tutorial", ()=>_launchURL('https://www.youtube.com/watch?v=TUxusK-X1JU'), Colors.deepOrange[300]),
-            launchURLButton("Call alerter", ()=>_launchURL('tel:12345678'),Colors.deepPurple[500]),
+            launchURLButton(
+                "Watch tutorial",
+                () => _launchURL('https://www.youtube.com/watch?v=TUxusK-X1JU'),
+                Colors.deepOrange[300]),
+            launchURLButton("Call alerter", () => _launchURL('tel:12345678'),
+                Colors.deepPurple[500]),
           ],
         ),
       ),
@@ -82,11 +87,10 @@ class _MapDirectionsState extends State<MapDirections> {
           style: TextStyle(fontSize: 40, color: Colors.white),
         ),
       ),
-      color:Colors.red[500],
+      color: Colors.red[500],
       shape: new RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50.0),
-        side: BorderSide(color: Colors.brown, width: 5)
-      ),
+          borderRadius: BorderRadius.circular(50.0),
+          side: BorderSide(color: Colors.brown, width: 5)),
       onPressed: onPressed,
     );
   }
@@ -100,7 +104,7 @@ class _MapDirectionsState extends State<MapDirections> {
     }
   }
 
-  /// This function is called when the google map is created. 
+  /// This function is called when the google map is created.
   /// We set the pins and show the path in this function.
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;

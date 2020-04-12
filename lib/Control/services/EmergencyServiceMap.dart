@@ -1,5 +1,5 @@
-import 'package:firebase_tutorial/shared/baseAppBar.dart';
-import 'package:firebase_tutorial/shared/loading.dart';
+import 'package:firebase_tutorial/Widget/BaseAppBar.dart';
+import 'package:firebase_tutorial/Widget/LoadingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -36,13 +36,10 @@ class _MyMapState extends State<MyMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BaseAppBar(
-        title: 'SERVICES : ${widget.type.toUpperCase()}',
-      ),
-      body: (position == null)
-          ? Loading()
-          : mapWidget()
-    );
+        appBar: BaseAppBar(
+          title: 'SERVICES : ${widget.type.toUpperCase()}',
+        ),
+        body: (position == null) ? Loading() : mapWidget());
   }
 
   void _getCurrentLocation() async {
@@ -63,7 +60,8 @@ class _MyMapState extends State<MyMap> {
         target: LatLng(position.latitude, position.longitude),
         zoom: 12.0,
       ),
-      onMapCreated: (GoogleMapController c) => _onMapCreated(), // same as a function which calls _onMapCreated (fat arrow notation)
+      onMapCreated: (GoogleMapController c) =>
+          _onMapCreated(), // same as a function which calls _onMapCreated (fat arrow notation)
     );
   }
 
