@@ -16,12 +16,13 @@ class EmergencyContacts extends StatefulWidget {
 class _EmergencyContactsState extends State<EmergencyContacts> {
   AuthorityDB adb;
 
-  ///This method is to allow for easy modification of the list of authorities
   void addAuthority() {
-    adb.setAuthorityList(Authority(name: 'FIRE STATION', contactNumber: '995'));
     adb.setAuthorityList(
-        Authority(name: 'POLICE STATION', contactNumber: '999'));
-    adb.setAuthorityList(Authority(name: 'HOSPITAL', contactNumber: '995'));
+        Authority(name: 'FIRE STATION', contactNumber: '995', iconID: 60220));
+    adb.setAuthorityList(
+        Authority(name: 'POLICE STATION', contactNumber: '999', iconID: 59516));
+    adb.setAuthorityList(
+        Authority(name: 'HOSPITAL', contactNumber: '995', iconID: 58696));
   }
 
   @override
@@ -58,19 +59,22 @@ class _EmergencyContactsState extends State<EmergencyContacts> {
                   text: adb.getAuthorityList()[0].name,
                   onPressed: () => _launchCaller(
                       'tel:$adb.getAuthorityList[0].contactNumber'),
-                  icon: IconData(60220, fontFamily: 'MaterialIcons'),
+                  icon: IconData(adb.getAuthorityList()[0].iconID,
+                      fontFamily: 'MaterialIcons'),
                 ),
                 RoundIconButtonII(
                   text: adb.getAuthorityList()[1].name,
                   onPressed: () => _launchCaller(
                       'tel:$adb.getAuthorityList[1].contactNumber'),
-                  icon: IconData(59516, fontFamily: 'MaterialIcons'),
+                  icon: IconData(adb.getAuthorityList()[1].iconID,
+                      fontFamily: 'MaterialIcons'),
                 ),
                 RoundIconButtonII(
                   text: adb.getAuthorityList()[2].name,
                   onPressed: () => _launchCaller(
                       'tel:$adb.getAuthorityList[2].contactNumber'),
-                  icon: IconData(58696, fontFamily: 'MaterialIcons'),
+                  icon: IconData(adb.getAuthorityList()[2].iconID,
+                      fontFamily: 'MaterialIcons'),
                 ),
               ],
             ),

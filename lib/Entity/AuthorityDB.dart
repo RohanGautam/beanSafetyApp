@@ -1,7 +1,6 @@
 import 'package:firebase_tutorial/Entity/Authority.dart';
 
-///This class is to store a List of Authority objects
-///Allows for adding authorities to the list
+/// This class stores the list of Authority objects
 class AuthorityDB {
   List<Authority> authorityList = [];
 
