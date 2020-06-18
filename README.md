@@ -2,8 +2,7 @@
 <p align="center">
     <img src="assets/beansAppLogo.png" alt="logo" width="200"/>
 </p>
-# Video:
-[![](http://img.youtube.com/vi/IXc08XhUKYg/0.jpg)](http://www.youtube.com/watch?v=IXc08XhUKYg "beans")
+# Video demo is on youtube [here](http://www.youtube.com/watch?v=IXc08XhUKYg)
 # Firebase:
 * Set up a new firebase project, and link it with an android app (work with the `/android` folder in flutter). Follow along the steps.
 * In the firebase console under "Authentication", set up email and anonymous login methods.
